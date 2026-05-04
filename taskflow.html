@@ -638,6 +638,135 @@
     border: 1px solid rgba(229,77,77,0.2);
     border-radius: var(--radius-sm);
   }
+  /* Complaints */
+  .complaint-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 12px;
+  }
+  .complaint-card {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--text-muted);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    position: relative;
+    transition: box-shadow 0.15s;
+  }
+  .complaint-card:hover { box-shadow: var(--shadow); }
+  .complaint-card[data-severity="high"] { border-left-color: var(--priority-high); }
+  .complaint-card[data-severity="medium"] { border-left-color: var(--priority-med); }
+  .complaint-card[data-severity="low"] { border-left-color: var(--priority-low); }
+  .complaint-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 4px;
+  }
+  .complaint-title {
+    font-weight: 600;
+    font-size: 14px;
+    flex: 1;
+  }
+  .complaint-actions {
+    display: flex;
+    gap: 4px;
+    opacity: 0.6;
+    transition: opacity 0.15s;
+  }
+  .complaint-card:hover .complaint-actions { opacity: 1; }
+  .complaint-actions button {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 3px 7px;
+    border-radius: 4px;
+    font-size: 13px;
+  }
+  .complaint-actions button:hover { background: var(--surface); color: var(--text); }
+  .complaint-actions .delete-btn:hover { color: var(--failed); }
+  .complaint-target {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+  .complaint-target strong { color: var(--text); }
+  .complaint-desc {
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.5;
+    white-space: pre-wrap;
+    word-break: break-word;
+    margin-bottom: 8px;
+  }
+  .complaint-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+  .status-badge {
+    padding: 2px 9px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 600;
+    border: 1px solid;
+  }
+  .status-badge.open {
+    background: rgba(229,77,77,0.12);
+    color: var(--failed);
+    border-color: rgba(229,77,77,0.3);
+  }
+  .status-badge.review {
+    background: rgba(245,166,35,0.12);
+    color: #c47b00;
+    border-color: rgba(245,166,35,0.3);
+  }
+  [data-theme="dark"] .status-badge.review { color: var(--progress); }
+  .status-badge.resolved {
+    background: rgba(43,182,115,0.12);
+    color: var(--done);
+    border-color: rgba(43,182,115,0.3);
+  }
+  .complaint-status-tabs {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 10px;
+  }
+  .complaint-tab {
+    padding: 6px 12px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    font-size: 12px;
+    cursor: pointer;
+    color: var(--text-muted);
+    transition: all 0.15s;
+  }
+  .complaint-tab:hover { color: var(--text); }
+  .complaint-tab.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+  }
+  .complaint-tab .count {
+    margin-left: 5px;
+    background: rgba(255,255,255,0.25);
+    padding: 0 6px;
+    border-radius: 10px;
+    font-size: 10px;
+  }
+  .complaint-tab:not(.active) .count {
+    background: var(--border);
+    color: var(--text-muted);
+  }
   /* Attachments */
   .attachments-list {
     display: flex;
@@ -753,6 +882,7 @@
   <div class="header-controls">
     <button class="btn btn-primary" onclick="openTaskModal()">+ New Task</button>
     <button class="btn" onclick="openNotesModal()">📝 Notes</button>
+    <button class="btn" onclick="openComplaintsModal()">⚠️ Complaints</button>
     <button class="btn" onclick="openStatsModal()">📊 Stats</button>
     <button class="btn-icon" onclick="toggleTheme()" title="Toggle theme">🌓</button>
     <button class="btn-icon" onclick="exportData()" title="Export">⬇</button>
@@ -890,6 +1020,44 @@
   </div>
 </div>
 
+<!-- Complaints Modal -->
+<div class="modal-backdrop" id="complaintsModal">
+  <div class="modal" style="max-width:760px">
+    <div class="modal-header">
+      <div class="modal-title">⚠️ Complaint List</div>
+      <button class="btn-icon" onclick="closeModal('complaintsModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label>Subject <span style="color:var(--failed)">*</span></label>
+        <input type="text" id="newComplaintSubject" placeholder="Short summary of the complaint">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>About (person, vendor, system...)</label>
+          <input type="text" id="newComplaintTarget" placeholder="e.g. Acme Vendor, Login Page">
+        </div>
+        <div class="form-group">
+          <label>Severity</label>
+          <select id="newComplaintSeverity">
+            <option value="low">Low</option>
+            <option value="medium" selected>Medium</option>
+            <option value="high">High</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Details</label>
+        <textarea id="newComplaintDesc" placeholder="Describe what happened, when, and impact..."></textarea>
+      </div>
+      <button class="btn btn-primary" onclick="addComplaint()">+ File Complaint</button>
+
+      <div class="complaint-status-tabs" style="margin-top:22px" id="complaintTabs"></div>
+      <div class="complaint-list" id="complaintsList"></div>
+    </div>
+  </div>
+</div>
+
 <!-- Stats Modal -->
 <div class="modal-backdrop" id="statsModal">
   <div class="modal">
@@ -924,7 +1092,9 @@ const STORAGE_KEY = 'taskflow_data_v1';
 let state = {
   tasks: [],
   notes: [],
+  complaints: [],
   filters: { priority: 'all', tag: 'all', search: '' },
+  complaintFilter: 'all',
   theme: 'light',
 };
 let editingTaskId = null;
@@ -939,6 +1109,7 @@ function loadState() {
       const parsed = JSON.parse(saved);
       state.tasks = parsed.tasks || [];
       state.notes = parsed.notes || [];
+      state.complaints = parsed.complaints || [];
       state.theme = parsed.theme || 'light';
     }
   } catch (e) { console.error('Load failed', e); }
@@ -961,6 +1132,7 @@ function saveState() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify({
     tasks: state.tasks,
     notes: state.notes,
+    complaints: state.complaints,
     theme: state.theme,
   }));
 }
@@ -1509,6 +1681,106 @@ function renderNotes() {
   `).join('');
 }
 
+// ===== Complaints =====
+function openComplaintsModal() {
+  document.getElementById('newComplaintSubject').value = '';
+  document.getElementById('newComplaintTarget').value = '';
+  document.getElementById('newComplaintDesc').value = '';
+  document.getElementById('newComplaintSeverity').value = 'medium';
+  renderComplaints();
+  document.getElementById('complaintsModal').classList.add('open');
+  setTimeout(() => document.getElementById('newComplaintSubject').focus(), 50);
+}
+
+function addComplaint() {
+  const subject = document.getElementById('newComplaintSubject').value.trim();
+  if (!subject) { showToast('Subject required'); return; }
+  const target = document.getElementById('newComplaintTarget').value.trim();
+  const desc = document.getElementById('newComplaintDesc').value.trim();
+  const severity = document.getElementById('newComplaintSeverity').value;
+  state.complaints.unshift({
+    id: uid(),
+    subject, target, desc, severity,
+    status: 'open',
+    createdAt: Date.now(),
+    updatedAt: Date.now(),
+  });
+  document.getElementById('newComplaintSubject').value = '';
+  document.getElementById('newComplaintTarget').value = '';
+  document.getElementById('newComplaintDesc').value = '';
+  document.getElementById('newComplaintSeverity').value = 'medium';
+  saveState();
+  renderComplaints();
+  showToast('Complaint filed');
+}
+
+function deleteComplaint(id) {
+  if (!confirm('Delete this complaint?')) return;
+  state.complaints = state.complaints.filter(c => c.id !== id);
+  saveState();
+  renderComplaints();
+}
+
+function cycleComplaintStatus(id) {
+  const c = state.complaints.find(x => x.id === id);
+  if (!c) return;
+  const order = ['open', 'review', 'resolved'];
+  const idx = order.indexOf(c.status);
+  c.status = order[(idx + 1) % order.length];
+  c.updatedAt = Date.now();
+  saveState();
+  renderComplaints();
+}
+
+function statusLabelComplaint(s) {
+  return { open: 'Open', review: 'In Review', resolved: 'Resolved' }[s] || s;
+}
+
+function renderComplaints() {
+  // Tabs with counts
+  const counts = { all: state.complaints.length, open: 0, review: 0, resolved: 0 };
+  state.complaints.forEach(c => { if (counts[c.status] !== undefined) counts[c.status]++; });
+  const tabs = [
+    { key: 'all', label: 'All' },
+    { key: 'open', label: 'Open' },
+    { key: 'review', label: 'In Review' },
+    { key: 'resolved', label: 'Resolved' },
+  ];
+  document.getElementById('complaintTabs').innerHTML = tabs.map(t =>
+    `<div class="complaint-tab ${state.complaintFilter === t.key ? 'active' : ''}" onclick="setComplaintFilter('${t.key}')">${t.label}<span class="count">${counts[t.key]}</span></div>`
+  ).join('');
+
+  const list = document.getElementById('complaintsList');
+  const filtered = state.complaints.filter(c => state.complaintFilter === 'all' || c.status === state.complaintFilter);
+  if (!filtered.length) {
+    list.innerHTML = `<div style="text-align:center;color:var(--text-muted);padding:30px;font-size:13px">${state.complaints.length === 0 ? 'No complaints yet. File one above when something needs attention.' : 'No complaints match this filter.'}</div>`;
+    return;
+  }
+  list.innerHTML = filtered.map(c => `
+    <div class="complaint-card" data-severity="${c.severity}">
+      <div class="complaint-header">
+        <div class="complaint-title">${escapeHtml(c.subject)}</div>
+        <div class="complaint-actions">
+          <button onclick="cycleComplaintStatus('${c.id}')" title="Change status">↻</button>
+          <button class="delete-btn" onclick="deleteComplaint('${c.id}')" title="Delete">✕</button>
+        </div>
+      </div>
+      ${c.target ? `<div class="complaint-target">About: <strong>${escapeHtml(c.target)}</strong></div>` : ''}
+      ${c.desc ? `<div class="complaint-desc">${escapeHtml(c.desc)}</div>` : ''}
+      <div class="complaint-meta">
+        <span class="status-badge ${c.status}">${statusLabelComplaint(c.status)}</span>
+        <span class="badge">Severity: ${c.severity}</span>
+        <span style="margin-left:auto">${new Date(c.createdAt).toLocaleDateString()}</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+function setComplaintFilter(f) {
+  state.complaintFilter = f;
+  renderComplaints();
+}
+
 // ===== Stats =====
 function openStatsModal() {
   const counts = { todo: 0, progress: 0, done: 0, failed: 0 };
@@ -1541,9 +1813,10 @@ function openStatsModal() {
       </div>
       <div class="completion-bar"><div class="completion-fill" style="width:${completionRate}%"></div></div>
     </div>
-    <div class="stats-grid" style="grid-template-columns:1fr 1fr">
+    <div class="stats-grid" style="grid-template-columns:repeat(3,1fr)">
       <div class="stat-card"><div class="stat-value" style="color:var(--failed)">${overdue}</div><div class="stat-label">Overdue</div></div>
       <div class="stat-card"><div class="stat-value" style="color:var(--progress)">${dueSoon}</div><div class="stat-label">Due in 48h</div></div>
+      <div class="stat-card"><div class="stat-value" style="color:var(--failed)">${state.complaints.filter(c => c.status === 'open').length}</div><div class="stat-label">Open Complaints</div></div>
     </div>
     ${topTags.length ? `
       <h4 style="margin-top:18px;margin-bottom:10px;font-size:13px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.4px">Top Tags</h4>
@@ -1601,7 +1874,7 @@ function toggleTheme() {
 
 // ===== Import/Export =====
 function exportData() {
-  const data = JSON.stringify({ tasks: state.tasks, notes: state.notes, exportedAt: new Date().toISOString() }, null, 2);
+  const data = JSON.stringify({ tasks: state.tasks, notes: state.notes, complaints: state.complaints, exportedAt: new Date().toISOString() }, null, 2);
   const blob = new Blob([data], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
@@ -1619,9 +1892,10 @@ function importData(e) {
   reader.onload = ev => {
     try {
       const data = JSON.parse(ev.target.result);
-      if (!confirm(`Import ${data.tasks?.length || 0} tasks and ${data.notes?.length || 0} notes? This will replace current data.`)) return;
+      if (!confirm(`Import ${data.tasks?.length || 0} tasks, ${data.notes?.length || 0} notes, and ${data.complaints?.length || 0} complaints? This will replace current data.`)) return;
       state.tasks = data.tasks || [];
       state.notes = data.notes || [];
+      state.complaints = data.complaints || [];
       saveState();
       render();
       showToast('Data imported');
