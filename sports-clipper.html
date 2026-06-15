@@ -6,1238 +6,1353 @@
 <title>SportsCLIP ⚡ Pro Highlight Maker</title>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-
 :root{
   --red:#ff2d55;--orange:#ff6b00;--yellow:#ffd60a;
-  --cyan:#00d4ff;--purple:#bf5af2;--green:#30d158;
-  --bg:#0d0d12;--surface:#16161e;--surface2:#1e1e2a;--surface3:#252534;
-  --border:rgba(255,255,255,0.07);--text:#f5f5f7;--text-dim:#8e8ea0;
+  --cyan:#00d4ff;--purple:#bf5af2;--green:#30d158;--pink:#ff375f;
+  --bg:#09090f;--surface:#13131c;--surface2:#1a1a26;--surface3:#222232;--surface4:#2a2a3e;
+  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.12);
+  --text:#f0f0f8;--text-dim:#7878a0;--text-mid:#b0b0cc;
+  --glow-r:0 0 24px rgba(255,45,85,.55);--glow-c:0 0 24px rgba(0,212,255,.55);
 }
+html,body{height:100%;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden}
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--surface3);border-radius:3px}
 
-html,body{height:100%;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden}
-::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--surface3);border-radius:3px}
-
-/* ── HEADER ── */
-.header{
-  background:linear-gradient(135deg,#0d0d12 0%,#180020 50%,#0d0d12 100%);
-  border-bottom:1px solid var(--border);padding:14px 24px;
+/* ═══ HEADER ═══ */
+.hdr{
+  background:linear-gradient(135deg,#09090f 0%,#140024 50%,#09090f 100%);
+  border-bottom:1px solid var(--border);padding:12px 20px;
   display:flex;align-items:center;justify-content:space-between;
-  position:sticky;top:0;z-index:100;backdrop-filter:blur(20px);
+  position:sticky;top:0;z-index:200;backdrop-filter:blur(24px);
 }
-.logo{display:flex;align-items:center;gap:12px}
-.logo-icon{
-  width:40px;height:40px;
+.logo{display:flex;align-items:center;gap:10px}
+.logo-ic{
+  width:38px;height:38px;
   background:linear-gradient(135deg,var(--red),var(--orange));
   border-radius:10px;display:flex;align-items:center;justify-content:center;
-  font-size:22px;box-shadow:0 0 20px rgba(255,45,85,.5);
+  font-size:20px;box-shadow:var(--glow-r);flex-shrink:0;
 }
-.logo-text{
-  font-size:22px;font-weight:900;letter-spacing:-1px;
-  background:linear-gradient(90deg,#fff,var(--cyan));
+.logo-txt{
+  font-size:21px;font-weight:900;letter-spacing:-1px;
+  background:linear-gradient(90deg,#fff 30%,var(--cyan));
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;
 }
 .logo-badge{
   font-size:9px;font-weight:800;color:var(--yellow);
   background:rgba(255,214,10,.12);border:1px solid rgba(255,214,10,.3);
-  padding:3px 8px;border-radius:20px;letter-spacing:1.5px;
+  padding:3px 7px;border-radius:20px;letter-spacing:1.5px;
 }
-.hdr-right{display:flex;align-items:center;gap:12px}
-.hdr-tip{font-size:12px;color:var(--text-dim)}
-.badge-live{
+.hdr-r{display:flex;align-items:center;gap:10px}
+.pill-green{
   display:flex;align-items:center;gap:6px;font-size:11px;font-weight:700;
-  color:var(--green);background:rgba(48,209,88,.08);
-  border:1px solid rgba(48,209,88,.2);padding:4px 10px;border-radius:20px;
+  color:var(--green);background:rgba(48,209,88,.08);border:1px solid rgba(48,209,88,.2);
+  padding:4px 10px;border-radius:20px;
 }
-.badge-live::before{content:'';width:6px;height:6px;background:var(--green);border-radius:50%;animation:pgr 1.5s infinite}
-@keyframes pgr{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
+.pill-green::before{content:'';width:6px;height:6px;background:var(--green);border-radius:50%;animation:pg 1.5s infinite}
+@keyframes pg{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
+.hdr-hint{font-size:11px;color:var(--text-dim)}
+.hdr-hint kbd{background:var(--surface3);border:1px solid var(--border2);border-radius:4px;padding:1px 5px;font-family:monospace;font-size:10px;color:var(--text-mid)}
 
-/* ── LAYOUT ── */
-.app{display:grid;grid-template-columns:1fr 360px;min-height:calc(100vh - 68px)}
-.main-panel{padding:20px;display:flex;flex-direction:column;gap:16px;overflow-y:auto}
-.side-panel{background:var(--surface);border-left:1px solid var(--border);overflow-y:auto;height:calc(100vh - 68px);position:sticky;top:68px}
+/* ═══ LAYOUT ═══ */
+.app{display:grid;grid-template-columns:1fr 348px;min-height:calc(100vh - 62px)}
+.main{padding:16px 16px 16px 20px;display:flex;flex-direction:column;gap:14px;overflow-y:auto}
+.side{background:var(--surface);border-left:1px solid var(--border);overflow-y:auto;height:calc(100vh - 62px);position:sticky;top:62px}
 
-/* ── UPLOAD ── */
-.upload-zone{
-  border:2px dashed rgba(255,45,85,.35);border-radius:20px;
-  padding:64px 32px;text-align:center;cursor:pointer;transition:all .3s;
-  background:radial-gradient(ellipse at center,rgba(255,45,85,.06),transparent 70%);
-  position:relative;
+/* ═══ UPLOAD ═══ */
+.upload{
+  border:2px dashed rgba(255,45,85,.3);border-radius:18px;
+  padding:56px 28px;text-align:center;cursor:pointer;transition:all .3s;
+  background:radial-gradient(ellipse at 50% 60%,rgba(255,45,85,.07),transparent 70%);
+  position:relative;overflow:hidden;
 }
-.upload-zone:hover,.upload-zone.drag-over{
+.upload::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,transparent 60%,rgba(255,107,0,.04));
+  pointer-events:none;
+}
+.upload:hover,.upload.drag{
   border-color:var(--red);
-  background:radial-gradient(ellipse at center,rgba(255,45,85,.12),transparent 70%);
-  box-shadow:inset 0 0 40px rgba(255,45,85,.06),0 0 30px rgba(255,45,85,.12);
+  background:radial-gradient(ellipse at 50% 60%,rgba(255,45,85,.14),transparent 70%);
+  box-shadow:inset 0 0 50px rgba(255,45,85,.06),0 0 36px rgba(255,45,85,.12);
 }
-.up-icon{font-size:72px;margin-bottom:16px;filter:drop-shadow(0 0 20px rgba(255,45,85,.6));animation:flt 3s ease-in-out infinite}
-@keyframes flt{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
-.up-title{font-size:26px;font-weight:800;margin-bottom:8px;background:linear-gradient(90deg,#fff,var(--red));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.up-sub{color:var(--text-dim);font-size:14px;margin-bottom:22px}
-.btn-upload{
-  display:inline-flex;align-items:center;gap:8px;padding:13px 30px;
+.up-ic{font-size:72px;margin-bottom:14px;filter:drop-shadow(0 0 22px rgba(255,45,85,.7));animation:flt 3.5s ease-in-out infinite}
+@keyframes flt{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-12px) rotate(2deg)}}
+.up-h{font-size:26px;font-weight:800;margin-bottom:8px;background:linear-gradient(90deg,#fff,var(--red));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.up-s{color:var(--text-dim);font-size:14px;margin-bottom:22px;line-height:1.6}
+.btn-up{
+  display:inline-flex;align-items:center;gap:8px;padding:13px 28px;
   background:linear-gradient(135deg,var(--red),var(--orange));
   color:#fff;border:none;border-radius:50px;font-size:15px;font-weight:700;
-  cursor:pointer;transition:all .2s;box-shadow:0 4px 24px rgba(255,45,85,.45);
+  cursor:pointer;box-shadow:0 4px 24px rgba(255,45,85,.45);transition:all .25s;
 }
-.btn-upload:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(255,45,85,.55)}
-.up-fmts{margin-top:14px;font-size:12px;color:var(--text-dim)}
+.btn-up:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(255,45,85,.6)}
+.up-fmt{margin-top:14px;font-size:12px;color:var(--text-dim);opacity:.7}
 
-/* ── WORKSPACE ── */
-.workspace{display:none;flex-direction:column;gap:16px;animation:fadein .35s ease}
-.workspace.active{display:flex}
-@keyframes fadein{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+/* ═══ WORKSPACE ═══ */
+.ws{display:none;flex-direction:column;gap:14px;animation:fi .3s ease}
+.ws.on{display:flex}
+@keyframes fi{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 
-/* ── STATS BAR ── */
-.stats-bar{
-  display:flex;gap:16px;flex-wrap:wrap;padding:10px 16px;
-  background:var(--surface);border:1px solid var(--border);border-radius:12px;
+/* ═══ STATS BAR ═══ */
+.stats{display:flex;gap:12px;flex-wrap:wrap;padding:10px 14px;background:var(--surface);border:1px solid var(--border);border-radius:12px}
+.si{display:flex;align-items:center;gap:5px}
+.sl{font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.6px}
+.sv{font-size:13px;font-weight:700;color:var(--cyan);font-variant-numeric:tabular-nums}
+
+/* ═══ FORMAT TABS ═══ */
+.fmt-bar{display:flex;gap:6px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:8px}
+.fmt-btn{
+  flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;
+  padding:8px 4px;background:transparent;border:1px solid var(--border);
+  border-radius:8px;cursor:pointer;transition:all .2s;color:var(--text-dim);font-size:11px;font-weight:600;
 }
-.stat-item{display:flex;align-items:center;gap:6px}
-.stat-label{font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.6px}
-.stat-value{font-size:13px;font-weight:700;color:var(--cyan);font-variant-numeric:tabular-nums}
+.fmt-btn .fmt-ic{font-size:18px;line-height:1}
+.fmt-btn:hover{background:var(--surface2);color:var(--text)}
+.fmt-btn.active{background:rgba(255,45,85,.1);border-color:var(--red);color:var(--red)}
 
-/* ── PLAYER ── */
-.player-wrap{position:relative;background:#000;border-radius:16px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.8),0 0 0 1px var(--border)}
-.main-canvas{width:100%;max-height:440px;object-fit:contain;display:block}
-.player-controls{
+/* ═══ PLAYER ═══ */
+.player-wrap{position:relative;background:#000;border-radius:14px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.9),0 0 0 1px var(--border)}
+#mainCanvas{width:100%;max-height:420px;display:block;object-fit:contain}
+.crop-overlay{position:absolute;inset:0;pointer-events:none;z-index:5}
+.crop-dim{position:absolute;background:rgba(0,0,0,.55)}
+.crop-frame{position:absolute;border:2px solid rgba(255,214,10,.8);box-shadow:0 0 0 1px rgba(255,214,10,.3)}
+.player-ctrl{
   position:absolute;bottom:0;left:0;right:0;
-  background:linear-gradient(transparent,rgba(0,0,0,.9));
-  padding:30px 16px 14px;display:flex;align-items:center;gap:10px;
-  opacity:0;transition:opacity .2s;
+  background:linear-gradient(transparent,rgba(0,0,0,.92));
+  padding:32px 14px 12px;display:flex;align-items:center;gap:10px;
+  opacity:0;transition:opacity .2s;z-index:10;
 }
-.player-wrap:hover .player-controls{opacity:1}
+.player-wrap:hover .player-ctrl{opacity:1}
 .btn-play{
-  width:42px;height:42px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.2);
-  border-radius:50%;color:#fff;font-size:15px;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;flex-shrink:0;
-  transition:all .2s;backdrop-filter:blur(10px);
+  width:40px;height:40px;background:rgba(255,255,255,.12);
+  border:1px solid rgba(255,255,255,.2);border-radius:50%;color:#fff;
+  font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;transition:all .2s;
 }
 .btn-play:hover{background:rgba(255,45,85,.5);border-color:var(--red);transform:scale(1.1)}
-.time-disp{font-size:12px;font-weight:600;color:#fff;white-space:nowrap;font-variant-numeric:tabular-nums}
-.pbar{flex:1;height:4px;background:rgba(255,255,255,.2);border-radius:2px;cursor:pointer;position:relative;transition:height .15s}
-.pbar:hover{height:6px}
-.pbar-fill{height:100%;background:linear-gradient(90deg,var(--red),var(--orange));border-radius:2px}
-.spd-btn{
-  background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);
-  color:#fff;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:700;cursor:pointer;transition:all .2s;
-}
-.spd-btn:hover,.spd-btn.active{background:rgba(0,212,255,.2);border-color:var(--cyan);color:var(--cyan)}
-.loading-overlay{
-  position:absolute;inset:0;background:rgba(0,0,0,.7);
+.t-disp{font-size:12px;font-weight:600;color:#fff;white-space:nowrap;font-variant-numeric:tabular-nums}
+.pbar-wrap{flex:1;height:4px;background:rgba(255,255,255,.18);border-radius:2px;cursor:pointer;transition:height .15s;position:relative}
+.pbar-wrap:hover{height:7px}
+.pbar-fill{height:100%;background:linear-gradient(90deg,var(--red),var(--orange));border-radius:2px;pointer-events:none}
+.spd{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:#fff;padding:4px 9px;border-radius:20px;font-size:11px;font-weight:700;cursor:pointer;transition:all .2s;white-space:nowrap}
+.spd:hover,.spd.on{background:rgba(0,212,255,.2);border-color:var(--cyan);color:var(--cyan)}
+.load-ov{
+  position:absolute;inset:0;background:rgba(0,0,0,.75);
   display:none;align-items:center;justify-content:center;
-  z-index:50;flex-direction:column;gap:12px;backdrop-filter:blur(4px);
+  z-index:50;flex-direction:column;gap:14px;backdrop-filter:blur(6px);
 }
-.loading-overlay.active{display:flex}
-.spinner{width:40px;height:40px;border:3px solid rgba(255,255,255,.1);border-top-color:var(--red);border-radius:50%;animation:spin .8s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-.loading-txt{font-size:14px;color:#fff;font-weight:600}
+.load-ov.on{display:flex}
+.spin{width:40px;height:40px;border:3px solid rgba(255,255,255,.1);border-top-color:var(--red);border-radius:50%;animation:sp .8s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.load-txt{font-size:13px;color:#fff;font-weight:600}
 
-/* ── TIMELINE ── */
-.tl-section{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:12px}
-.tl-header{display:flex;align-items:center;justify-content:space-between}
-.sec-title{font-size:12px;font-weight:700;color:var(--text-dim);letter-spacing:1px;text-transform:uppercase}
-.clip-dur{font-size:12px;font-weight:700;padding:3px 10px;border-radius:20px;transition:all .3s}
-.clip-dur.ok{color:var(--green);background:rgba(48,209,88,.1);border:1px solid rgba(48,209,88,.2)}
-.clip-dur.warn{color:var(--yellow);background:rgba(255,214,10,.1);border:1px solid rgba(255,214,10,.2)}
-.clip-dur.over{color:var(--red);background:rgba(255,45,85,.1);border:1px solid rgba(255,45,85,.2);animation:shk .3s ease}
+/* ═══ TIMELINE ═══ */
+.tl-wrap{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:10px}
+.tl-hdr{display:flex;align-items:center;justify-content:space-between}
+.sec-lbl{font-size:11px;font-weight:700;color:var(--text-dim);letter-spacing:.9px;text-transform:uppercase}
+.cdur{font-size:12px;font-weight:700;padding:3px 10px;border-radius:20px;transition:all .3s}
+.cdur.ok{color:var(--green);background:rgba(48,209,88,.1);border:1px solid rgba(48,209,88,.2)}
+.cdur.warn{color:var(--yellow);background:rgba(255,214,10,.1);border:1px solid rgba(255,214,10,.2)}
+.cdur.bad{color:var(--red);background:rgba(255,45,85,.1);border:1px solid rgba(255,45,85,.2);animation:shk .3s}
 @keyframes shk{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
-.tl-track{position:relative;height:64px;background:var(--surface2);border-radius:12px;overflow:visible;cursor:pointer;user-select:none}
-.tl-wave{position:absolute;inset:8px;display:flex;align-items:center;gap:1px;opacity:.25;pointer-events:none}
-.w-bar{flex:1;background:var(--cyan);border-radius:1px;min-width:2px}
-.tl-sel{position:absolute;top:0;bottom:0;background:rgba(0,212,255,.15);border-top:2px solid var(--cyan);border-bottom:2px solid var(--cyan);pointer-events:none;border-radius:2px}
-.tl-handle{
-  position:absolute;top:50%;transform:translate(-50%,-50%);
-  width:18px;height:44px;background:var(--cyan);border-radius:5px;
-  cursor:ew-resize;z-index:10;display:flex;flex-direction:column;
-  align-items:center;justify-content:center;gap:3px;
-  box-shadow:0 0 16px rgba(0,212,255,.6);transition:box-shadow .2s,width .15s;
-}
-.tl-handle.end{background:var(--red);box-shadow:0 0 16px rgba(255,45,85,.6)}
-.tl-handle:hover,.tl-handle.drag{box-shadow:0 0 28px rgba(0,212,255,.9);width:21px}
-.tl-handle.end:hover,.tl-handle.end.drag{box-shadow:0 0 28px rgba(255,45,85,.9);width:21px}
-.hbar{width:2px;height:10px;background:rgba(0,0,0,.4);border-radius:1px}
-.tl-head{position:absolute;top:-5px;bottom:-5px;width:2px;background:#fff;pointer-events:none;z-index:15}
-.tl-head::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:8px;height:8px;background:#fff;border-radius:50%}
-.tl-stamps{display:flex;justify-content:space-between;font-size:10px;color:var(--text-dim);font-variant-numeric:tabular-nums}
-.clip-markers{display:flex;gap:8px;align-items:center}
-.mark-btn{display:flex;align-items:center;gap:6px;padding:7px 14px;border-radius:9px;font-size:12px;font-weight:700;cursor:pointer;border:1px solid;transition:all .2s}
-.mark-btn.in{color:var(--cyan);border-color:rgba(0,212,255,.3);background:rgba(0,212,255,.08)}
-.mark-btn.in:hover{background:rgba(0,212,255,.15)}
-.mark-btn.out{color:var(--red);border-color:rgba(255,45,85,.3);background:rgba(255,45,85,.08)}
-.mark-btn.out:hover{background:rgba(255,45,85,.15)}
-.mark-btn.preview{color:var(--yellow);border-color:rgba(255,214,10,.3);background:rgba(255,214,10,.08);flex:1;justify-content:center}
-.mark-btn.preview:hover{background:rgba(255,214,10,.15)}
-.mark-time{font-variant-numeric:tabular-nums;opacity:.8}
-.shortcut-hint{font-size:10px;color:var(--text-dim);text-align:center;margin-top:-4px}
-.shortcut-hint kbd{background:var(--surface3);border:1px solid var(--border);border-radius:4px;padding:1px 5px;font-family:monospace;font-size:10px}
 
-/* ── SIDE PANEL ── */
-.side-sec{padding:16px;border-bottom:1px solid var(--border)}
-.side-title{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:14px}
+/* Thumbnail strip */
+.thumb-strip{height:44px;background:var(--surface2);border-radius:8px;overflow:hidden;position:relative;display:flex}
+.thumb-cell{flex:1;background-size:cover;background-position:center;opacity:.75;transition:opacity .2s}
+.thumb-cell:hover{opacity:1}
+.thumb-loading{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--text-dim)}
+
+/* Track */
+.tl-track{position:relative;height:52px;background:var(--surface2);border-radius:10px;overflow:visible;cursor:pointer;user-select:none}
+.tl-bg-grad{position:absolute;inset:0;border-radius:10px;background:linear-gradient(90deg,rgba(255,45,85,.06),rgba(0,212,255,.06));pointer-events:none}
+.tl-sel{position:absolute;top:0;bottom:0;background:rgba(0,212,255,.12);border-top:2px solid var(--cyan);border-bottom:2px solid var(--cyan);pointer-events:none}
+.tl-h{
+  position:absolute;top:50%;transform:translate(-50%,-50%);
+  width:16px;height:40px;background:var(--cyan);border-radius:5px;
+  cursor:ew-resize;z-index:20;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+  box-shadow:0 0 16px rgba(0,212,255,.7);transition:width .15s,box-shadow .2s;
+}
+.tl-h.end{background:var(--red);box-shadow:0 0 16px rgba(255,45,85,.7)}
+.tl-h:hover,.tl-h.drag{width:19px}
+.tl-h.end:hover,.tl-h.end.drag{box-shadow:0 0 26px rgba(255,45,85,.9)}
+.tl-h:not(.end):hover,.tl-h:not(.end).drag{box-shadow:0 0 26px rgba(0,212,255,.9)}
+.hb{width:2px;height:9px;background:rgba(0,0,0,.45);border-radius:1px}
+.tl-head{position:absolute;top:-4px;bottom:-4px;width:2px;background:#fff;pointer-events:none;z-index:15}
+.tl-head::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:8px;height:8px;background:#fff;border-radius:50%}
+.tl-stamps{display:flex;justify-content:space-between;font-size:10px;color:var(--text-dim);font-variant-numeric:tabular-nums;padding:0 2px}
+
+/* Clip marker buttons */
+.clip-btns{display:flex;gap:7px;align-items:center}
+.mark-btn{display:flex;align-items:center;gap:5px;padding:7px 12px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;border:1px solid;transition:all .2s;letter-spacing:.2px}
+.mark-btn.in{color:var(--cyan);border-color:rgba(0,212,255,.3);background:rgba(0,212,255,.07)}
+.mark-btn.in:hover{background:rgba(0,212,255,.14)}
+.mark-btn.out{color:var(--red);border-color:rgba(255,45,85,.3);background:rgba(255,45,85,.07)}
+.mark-btn.out:hover{background:rgba(255,45,85,.14)}
+.mark-btn.prev{flex:1;justify-content:center;color:var(--yellow);border-color:rgba(255,214,10,.3);background:rgba(255,214,10,.07)}
+.mark-btn.prev:hover{background:rgba(255,214,10,.14)}
+.mt{font-variant-numeric:tabular-nums;font-size:11px;opacity:.8}
+.kb-hint{font-size:10px;color:var(--text-dim);text-align:center;padding-top:2px}
+.kb-hint kbd{background:var(--surface3);border:1px solid var(--border2);border-radius:3px;padding:1px 5px;font-family:monospace;font-size:9px}
+
+/* ═══ SIDE PANEL SECTIONS ═══ */
+.ss{padding:14px;border-bottom:1px solid var(--border)}
+.st{display:flex;align-items:center;gap:7px;font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:.9px;margin-bottom:12px;cursor:pointer;user-select:none}
+.st .arr{margin-left:auto;font-size:10px;transition:transform .2s}
+.ss.collapsed .arr{transform:rotate(-90deg)}
+.ss-body{display:flex;flex-direction:column;gap:0}
+.ss.collapsed .ss-body{display:none}
 
 /* Sport grid */
-.sport-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.sport-btn{padding:10px 6px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;color:var(--text-dim);font-size:11px;font-weight:600;cursor:pointer;transition:all .2s;text-align:center;display:flex;flex-direction:column;align-items:center;gap:4px}
-.sport-em{font-size:22px}
-.sport-btn:hover{background:var(--surface3);color:var(--text)}
-.sport-btn.active{background:rgba(255,45,85,.1);border-color:var(--red);color:var(--red)}
+.sport-g{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.sp-btn{padding:9px 4px;background:var(--surface2);border:1px solid var(--border);border-radius:9px;color:var(--text-dim);font-size:10px;font-weight:700;cursor:pointer;transition:all .2s;text-align:center;display:flex;flex-direction:column;align-items:center;gap:3px;letter-spacing:.2px}
+.sp-em{font-size:20px;line-height:1.2}
+.sp-btn:hover{background:var(--surface3);color:var(--text-mid);border-color:var(--border2)}
+.sp-btn.on{background:rgba(255,45,85,.1);border-color:var(--red);color:var(--red)}
 
-/* Hooks */
-.hook-grid{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
-.hook-tpl{padding:10px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:space-between;color:var(--text)}
-.hook-tpl:hover{background:var(--surface3);transform:translateX(2px)}
-.hook-tpl.sel{background:rgba(0,212,255,.08);border-color:var(--cyan);color:var(--cyan)}
+/* Hook templates */
+.hook-g{display:flex;flex-direction:column;gap:5px;margin-bottom:12px}
+.hook-t{padding:9px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:9px;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:space-between;color:var(--text-mid)}
+.hook-t:hover{background:var(--surface3);color:var(--text);transform:translateX(2px)}
+.hook-t.on{background:rgba(0,212,255,.07);border-color:rgba(0,212,255,.4);color:var(--cyan)}
 
 /* Inputs */
-.inp-group{margin-bottom:12px}
-.inp-label{font-size:10px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px;display:block}
-.txt-inp{width:100%;padding:9px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:14px;font-family:inherit;transition:all .2s;outline:none;resize:none}
-.txt-inp:focus{border-color:var(--cyan);box-shadow:0 0 12px rgba(0,212,255,.1)}
-.txt-inp::placeholder{color:var(--text-dim)}
+.ig{margin-bottom:11px}
+.il{font-size:10px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:.7px;margin-bottom:5px;display:block}
+.inp{width:100%;padding:8px 11px;background:var(--surface2);border:1px solid var(--border);border-radius:9px;color:var(--text);font-size:13px;font-family:inherit;outline:none;resize:none;transition:all .2s}
+.inp:focus{border-color:rgba(0,212,255,.5);box-shadow:0 0 0 3px rgba(0,212,255,.06)}
+.inp::placeholder{color:var(--text-dim)}
+
+/* Text animations */
+.anim-g{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-bottom:12px}
+.anim-btn{padding:8px 4px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;cursor:pointer;font-size:10px;font-weight:700;color:var(--text-dim);text-align:center;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:3px}
+.anim-btn .a-ic{font-size:16px;line-height:1.2}
+.anim-btn:hover{background:var(--surface3);color:var(--text-mid)}
+.anim-btn.on{background:rgba(191,90,242,.1);border-color:var(--purple);color:var(--purple)}
 
 /* Position grid */
-.pos-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:4px}
-.pos-btn{padding:8px 4px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;cursor:pointer;font-size:10px;font-weight:600;color:var(--text-dim);text-align:center;transition:all .2s}
-.pos-btn:hover{background:var(--surface3);color:var(--text)}
-.pos-btn.active{background:rgba(255,214,10,.1);border-color:var(--yellow);color:var(--yellow)}
+.pos-g{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-bottom:12px}
+.pos-btn{padding:7px 2px;background:var(--surface2);border:1px solid var(--border);border-radius:7px;cursor:pointer;font-size:10px;font-weight:600;color:var(--text-dim);text-align:center;transition:all .2s}
+.pos-btn:hover{background:var(--surface3);color:var(--text-mid)}
+.pos-btn.on{background:rgba(255,214,10,.1);border-color:var(--yellow);color:var(--yellow)}
 
-/* Color swatches */
-.color-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
-.col-sw{width:28px;height:28px;border-radius:6px;cursor:pointer;transition:all .2s;border:2px solid transparent}
-.col-sw:hover,.col-sw.active{transform:scale(1.25);border-color:#fff}
+/* Color row */
+.col-r{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.col-sw{width:26px;height:26px;border-radius:6px;cursor:pointer;transition:all .2s;border:2px solid transparent}
+.col-sw:hover,.col-sw.on{transform:scale(1.3);border-color:#fff}
 
-/* Score overlay inputs */
-.score-wrap{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;margin-bottom:12px}
-.score-vs{font-size:15px;font-weight:900;color:var(--text-dim);text-align:center}
-.score-team{display:flex;flex-direction:column;gap:4px}
-.score-num{text-align:center;font-size:24px;font-weight:900;background:var(--surface2);border:1px solid var(--border);border-radius:10px;color:var(--text);padding:4px;font-variant-numeric:tabular-nums;outline:none;transition:all .2s;width:100%}
-.score-num:focus{border-color:var(--cyan)}
-.team-inp{text-align:center;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+/* Lower third */
+.lt-row{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:end;margin-bottom:8px}
+.lt-colors{display:flex;gap:5px;margin-bottom:11px}
+.lt-col{width:22px;height:22px;border-radius:5px;cursor:pointer;transition:all .2s;border:2px solid transparent}
+.lt-col:hover,.lt-col.on{transform:scale(1.3);border-color:#fff}
+
+/* Score */
+.score-g{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;margin-bottom:10px}
+.sc-vs{font-size:14px;font-weight:900;color:var(--text-dim);text-align:center}
+.sc-t{display:flex;flex-direction:column;gap:4px}
+.sc-num{text-align:center;font-size:22px;font-weight:900;background:var(--surface2);border:1px solid var(--border);border-radius:9px;color:var(--text);padding:4px;font-variant-numeric:tabular-nums;outline:none;width:100%;transition:all .2s}
+.sc-num:focus{border-color:rgba(0,212,255,.5)}
+.sc-tnm{text-align:center;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+
+/* Color grades */
+.grade-g{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:8px}
+.grade-btn{
+  padding:0;border:1px solid var(--border);border-radius:9px;cursor:pointer;
+  overflow:hidden;transition:all .2s;display:flex;flex-direction:column;
+}
+.grade-swatch{height:32px}
+.grade-lbl{font-size:9px;font-weight:700;color:var(--text-dim);text-align:center;padding:4px 2px;background:var(--surface2)}
+.grade-btn:hover{border-color:var(--border2);transform:scale(1.04)}
+.grade-btn.on{border-color:var(--cyan);box-shadow:0 0 10px rgba(0,212,255,.3)}
+.grade-btn.on .grade-lbl{color:var(--cyan)}
 
 /* Effects */
-.fx-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.fx-toggle{padding:12px;background:var(--surface2);border:1px solid var(--border);border-radius:12px;cursor:pointer;transition:all .2s;display:flex;flex-direction:column;gap:6px}
-.fx-toggle:hover{background:var(--surface3)}
-.fx-toggle.on{border-color:var(--purple);background:rgba(191,90,242,.08)}
-.fx-ic{font-size:20px}
-.fx-nm{font-size:11px;font-weight:700;color:var(--text)}
-.fx-bar{width:32px;height:5px;background:var(--surface3);border-radius:3px;transition:all .3s}
-.fx-toggle.on .fx-bar{background:var(--purple);box-shadow:0 0 8px rgba(191,90,242,.5)}
+.fx-g{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.fx{padding:11px;background:var(--surface2);border:1px solid var(--border);border-radius:11px;cursor:pointer;transition:all .2s;display:flex;flex-direction:column;gap:5px}
+.fx:hover{background:var(--surface3)}
+.fx.on{border-color:var(--purple);background:rgba(191,90,242,.08)}
+.fx-i{font-size:18px;line-height:1}
+.fx-n{font-size:10px;font-weight:700;color:var(--text-mid);letter-spacing:.2px}
+.fx-bar{width:28px;height:4px;background:var(--surface4);border-radius:2px;transition:all .3s}
+.fx.on .fx-bar{background:var(--purple);box-shadow:0 0 7px rgba(191,90,242,.6)}
 
-/* Tip box */
-.tip-box{margin:4px 16px 0;padding:10px 12px;background:rgba(0,212,255,.05);border:1px solid rgba(0,212,255,.12);border-radius:10px;font-size:12px;color:var(--text-dim);line-height:1.55}
-.tip-box strong{color:var(--cyan)}
+/* Tip */
+.tip{margin:4px 14px 2px;padding:9px 11px;background:rgba(0,212,255,.05);border:1px solid rgba(0,212,255,.1);border-radius:9px;font-size:11px;color:var(--text-dim);line-height:1.55}
+.tip strong{color:var(--cyan)}
 
 /* Export */
-.export-sec{padding:16px}
-.btn-export{
-  width:100%;padding:16px;background:linear-gradient(135deg,var(--red),var(--orange));
-  color:#fff;border:none;border-radius:14px;font-size:15px;font-weight:800;
+.exp-sec{padding:14px}
+.btn-exp{
+  width:100%;padding:15px;background:linear-gradient(135deg,var(--red),var(--orange));
+  color:#fff;border:none;border-radius:13px;font-size:15px;font-weight:800;
   cursor:pointer;transition:all .3s;letter-spacing:.4px;
-  box-shadow:0 4px 24px rgba(255,45,85,.45);display:flex;align-items:center;justify-content:center;gap:10px;position:relative;overflow:hidden;
+  box-shadow:0 4px 24px rgba(255,45,85,.45);
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  position:relative;overflow:hidden;
 }
-.btn-export:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(255,45,85,.55)}
-.btn-export:disabled{opacity:.45;cursor:not-allowed;transform:none}
-.exp-prog{margin-top:12px;display:none}
-.exp-prog.active{display:block}
-.prog-track{height:4px;background:var(--surface2);border-radius:2px;overflow:hidden;margin-bottom:6px}
-.prog-fill{height:100%;background:linear-gradient(90deg,var(--red),var(--orange),var(--yellow));border-radius:2px;background-size:200% 100%;animation:shim 1.5s infinite}
-@keyframes shim{0%{background-position:200% 0}100%{background-position:-200% 0}}
-.prog-txt{font-size:11px;color:var(--text-dim);text-align:center}
+.btn-exp::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent,rgba(255,255,255,.12));opacity:0;transition:opacity .2s}
+.btn-exp:hover::before{opacity:1}
+.btn-exp:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(255,45,85,.6)}
+.btn-exp:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.ep{margin-top:10px;display:none}
+.ep.on{display:block}
+.ep-track{height:4px;background:var(--surface2);border-radius:2px;overflow:hidden;margin-bottom:5px}
+.ep-fill{height:100%;background:linear-gradient(90deg,var(--red),var(--orange),var(--yellow));border-radius:2px;background-size:200%;animation:shm 1.5s infinite}
+@keyframes shm{0%{background-position:200%}100%{background-position:-200%}}
+.ep-txt{font-size:11px;color:var(--text-dim);text-align:center}
 
 /* Toast */
 .toast{
-  position:fixed;bottom:24px;left:50%;
-  transform:translateX(-50%) translateY(100px);
-  background:var(--surface3);border:1px solid var(--border);border-radius:50px;
-  padding:12px 24px;font-size:14px;font-weight:600;color:var(--text);
+  position:fixed;bottom:22px;left:50%;
+  transform:translateX(-50%) translateY(120px);
+  background:var(--surface3);border:1px solid var(--border2);border-radius:50px;
+  padding:11px 22px;font-size:13px;font-weight:600;color:var(--text);
   z-index:9999;transition:transform .35s cubic-bezier(.34,1.56,.64,1);
-  display:flex;align-items:center;gap:8px;backdrop-filter:blur(20px);
-  box-shadow:0 8px 32px rgba(0,0,0,.6);
+  display:flex;align-items:center;gap:7px;backdrop-filter:blur(24px);
+  box-shadow:0 10px 36px rgba(0,0,0,.7);
 }
 .toast.show{transform:translateX(-50%) translateY(0)}
 .toast.success{border-color:var(--green)}
 .toast.error{border-color:var(--red)}
 .toast.info{border-color:var(--cyan)}
 
-/* Keyboard shortcut overlay */
-.kbd-shortcuts{
-  position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:999;
-  display:none;align-items:center;justify-content:center;backdrop-filter:blur(8px);
-}
-.kbd-shortcuts.show{display:flex}
-.kbd-box{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:28px;max-width:400px;width:90%}
-.kbd-title{font-size:18px;font-weight:800;margin-bottom:18px;color:var(--text)}
-.kbd-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border)}
-.kbd-row:last-child{border:none}
-.kbd-action{font-size:13px;color:var(--text-dim)}
-.kbd-key kbd{background:var(--surface2);border:1px solid var(--border);border-bottom:2px solid var(--surface3);border-radius:6px;padding:3px 8px;font-family:monospace;font-size:12px;color:var(--text)}
-.kbd-close{margin-top:18px;width:100%;padding:10px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;color:var(--text-dim);cursor:pointer;font-size:13px;font-weight:600;transition:all .2s}
-.kbd-close:hover{background:var(--surface3);color:var(--text)}
+/* Keyboard shortcuts modal */
+.kbd-ov{position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:999;display:none;align-items:center;justify-content:center;backdrop-filter:blur(10px)}
+.kbd-ov.show{display:flex}
+.kbd-box{background:var(--surface);border:1px solid var(--border2);border-radius:18px;padding:26px;max-width:380px;width:90%;box-shadow:0 30px 80px rgba(0,0,0,.8)}
+.kbd-title{font-size:17px;font-weight:800;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.kbd-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border)}
+.kbd-row:last-of-type{border:none}
+.kbd-action{font-size:12px;color:var(--text-dim)}
+.kbd-key{display:flex;gap:4px;align-items:center}
+.kbd-key kbd{background:var(--surface2);border:1px solid var(--border2);border-bottom:2px solid var(--surface3);border-radius:5px;padding:3px 7px;font-family:monospace;font-size:11px;color:var(--text-mid)}
+.btn-kclose{margin-top:16px;width:100%;padding:10px;background:var(--surface2);border:1px solid var(--border);border-radius:9px;color:var(--text-dim);cursor:pointer;font-size:12px;font-weight:600;transition:all .2s}
+.btn-kclose:hover{background:var(--surface3);color:var(--text)}
 
 @media(max-width:768px){
   .app{grid-template-columns:1fr}
-  .side-panel{height:auto;position:static;border-left:none;border-top:1px solid var(--border)}
-  .sport-grid{grid-template-columns:repeat(4,1fr)}
+  .side{height:auto;position:static;border-left:none;border-top:1px solid var(--border)}
+  .sport-g{grid-template-columns:repeat(5,1fr)}
 }
 </style>
 </head>
 <body>
 
-<header class="header">
+<!-- ─── HEADER ─── -->
+<header class="hdr">
   <div class="logo">
-    <div class="logo-icon">⚡</div>
-    <span class="logo-text">SportsCLIP</span>
+    <div class="logo-ic">⚡</div>
+    <span class="logo-txt">SportsCLIP</span>
     <span class="logo-badge">PRO</span>
   </div>
-  <div class="hdr-right">
-    <div class="badge-live">BROWSER NATIVE</div>
-    <span class="hdr-tip">Max 60s · Press <kbd style="background:var(--surface2);border:1px solid var(--border);border-radius:4px;padding:1px 5px;font-size:10px;font-family:monospace">?</kbd> for shortcuts</span>
+  <div class="hdr-r">
+    <div class="pill-green">BROWSER NATIVE</div>
+    <span class="hdr-hint">Max 60s &nbsp;·&nbsp; Press <kbd>?</kbd> for shortcuts</span>
   </div>
 </header>
 
 <div class="app">
-  <!-- ── MAIN ── -->
-  <div class="main-panel">
+<!-- ─── MAIN PANEL ─── -->
+<div class="main">
 
-    <!-- Upload zone -->
-    <div class="upload-zone" id="uploadZone">
-      <div class="up-icon">🏆</div>
-      <div class="up-title">Drop Your Game Footage</div>
-      <div class="up-sub">Drag & drop or click to choose a video file</div>
-      <button class="btn-upload" onclick="document.getElementById('fileInput').click()">
-        📁 Choose Video
-      </button>
-      <div class="up-fmts">Supports MP4 · WebM · MOV · AVI &nbsp;|&nbsp; Maximum 60-second clips for maximum impact</div>
-      <input type="file" id="fileInput" accept="video/*" style="display:none">
+  <!-- Upload zone -->
+  <div class="upload" id="uploadZone">
+    <div class="up-ic">🏆</div>
+    <div class="up-h">Drop Your Game Footage Here</div>
+    <div class="up-s">Turn raw game video into viral highlight clips<br>in seconds — 100% browser-based, no upload needed</div>
+    <button class="btn-up" onclick="document.getElementById('fi').click()">📁 Choose Video</button>
+    <div class="up-fmt">MP4 · WebM · MOV · AVI &nbsp;|&nbsp; Maximum 60-second clips</div>
+    <input type="file" id="fi" accept="video/*" style="display:none">
+  </div>
+
+  <!-- Workspace -->
+  <div class="ws" id="ws">
+
+    <!-- Stats -->
+    <div class="stats">
+      <div class="si"><span class="sl">File</span><span class="sv" id="sFile">—</span></div>
+      <div class="si"><span class="sl">Total</span><span class="sv" id="sDur">0:00</span></div>
+      <div class="si"><span class="sl">Resolution</span><span class="sv" id="sRes">—</span></div>
+      <div class="si"><span class="sl">Clip</span><span class="sv" id="sClip">0:00</span></div>
+      <div class="si"><span class="sl">Format</span><span class="sv" id="sFmt">16:9</span></div>
+      <div class="si"><span class="sl">Speed</span><span class="sv" id="sSp">1×</span></div>
     </div>
 
-    <!-- Workspace -->
-    <div class="workspace" id="workspace">
+    <!-- Format presets -->
+    <div class="fmt-bar">
+      <button class="fmt-btn active" data-fmt="16:9" onclick="setFmt(this)"><span class="fmt-ic">▬</span>16 : 9<span style="font-size:9px;opacity:.6">YouTube</span></button>
+      <button class="fmt-btn" data-fmt="1:1" onclick="setFmt(this)"><span class="fmt-ic">⬛</span>1 : 1<span style="font-size:9px;opacity:.6">Instagram</span></button>
+      <button class="fmt-btn" data-fmt="9:16" onclick="setFmt(this)"><span class="fmt-ic">▮</span>9 : 16<span style="font-size:9px;opacity:.6">TikTok</span></button>
+      <button class="fmt-btn" data-fmt="4:5" onclick="setFmt(this)"><span class="fmt-ic">▪</span>4 : 5<span style="font-size:9px;opacity:.6">Feed</span></button>
+    </div>
 
-      <!-- Stats -->
-      <div class="stats-bar">
-        <div class="stat-item"><span class="stat-label">File</span><span class="stat-value" id="sFile">—</span></div>
-        <div class="stat-item"><span class="stat-label">Duration</span><span class="stat-value" id="sDur">0:00</span></div>
-        <div class="stat-item"><span class="stat-label">Resolution</span><span class="stat-value" id="sRes">—</span></div>
-        <div class="stat-item"><span class="stat-label">Clip Length</span><span class="stat-value" id="sClip">0s</span></div>
-        <div class="stat-item"><span class="stat-label">Speed</span><span class="stat-value" id="sSp">1×</span></div>
+    <!-- Player -->
+    <div class="player-wrap" id="playerWrap">
+      <canvas id="mainCanvas" class="main-canvas"></canvas>
+      <div class="crop-overlay" id="cropOv"></div>
+      <div class="load-ov" id="loadOv">
+        <div class="spin"></div>
+        <div class="load-txt" id="loadTxt">Loading video…</div>
       </div>
-
-      <!-- Player -->
-      <div class="player-wrap" id="playerWrap">
-        <canvas id="mainCanvas" class="main-canvas"></canvas>
-        <div class="loading-overlay" id="loadingOverlay">
-          <div class="spinner"></div>
-          <div class="loading-txt" id="loadingTxt">Loading video…</div>
+      <div class="player-ctrl">
+        <button class="btn-play" id="playBtn" onclick="togglePlay()">▶</button>
+        <span class="t-disp" id="tDisp">0:00 / 0:00</span>
+        <div class="pbar-wrap" id="pbar" onclick="seekClick(event)">
+          <div class="pbar-fill" id="pbarFill" style="width:0%"></div>
         </div>
-        <div class="player-controls">
-          <button class="btn-play" id="playBtn" onclick="togglePlay()">▶</button>
-          <span class="time-disp" id="timeDis">0:00 / 0:00</span>
-          <div class="pbar" id="pbar" onclick="seekClick(event)"><div class="pbar-fill" id="pbarFill" style="width:0%"></div></div>
-          <button class="spd-btn" id="spdBtn" onclick="cycleSpeed()">1×</button>
-        </div>
-      </div>
-
-      <!-- Timeline -->
-      <div class="tl-section">
-        <div class="tl-header">
-          <span class="sec-title">✂️ Clip Timeline</span>
-          <span class="clip-dur ok" id="clipDur">0:00 / 60s</span>
-        </div>
-
-        <div class="tl-track" id="tlTrack">
-          <div class="tl-wave" id="tlWave"></div>
-          <div class="tl-sel" id="tlSel"></div>
-          <div class="tl-handle" id="hStart"><div class="hbar"></div><div class="hbar"></div><div class="hbar"></div></div>
-          <div class="tl-handle end" id="hEnd"><div class="hbar"></div><div class="hbar"></div><div class="hbar"></div></div>
-          <div class="tl-head" id="tlHead"></div>
-        </div>
-
-        <div class="tl-stamps">
-          <span id="ts0">0:00</span><span id="ts1">—</span><span id="ts2">—</span><span id="ts3">—</span><span id="ts4">—</span>
-        </div>
-
-        <div class="clip-markers">
-          <button class="mark-btn in" onclick="setIN()">⬅ IN <span class="mark-time" id="mtIn">0:00</span></button>
-          <button class="mark-btn out" onclick="setOUT()">OUT ➡ <span class="mark-time" id="mtOut">0:00</span></button>
-          <button class="mark-btn preview" onclick="previewClip()">▶ Preview Clip</button>
-        </div>
-        <div class="shortcut-hint"><kbd>I</kbd> set IN · <kbd>O</kbd> set OUT · <kbd>Space</kbd> play/pause · <kbd>←</kbd><kbd>→</kbd> seek</div>
-      </div>
-
-    </div><!-- /workspace -->
-
-    <video id="vid" style="display:none" crossorigin="anonymous" preload="auto"></video>
-  </div><!-- /main-panel -->
-
-  <!-- ── SIDE PANEL ── -->
-  <div class="side-panel">
-
-    <!-- Sport -->
-    <div class="side-sec">
-      <div class="side-title">🏅 Sport Type</div>
-      <div class="sport-grid" id="sportGrid">
-        <button class="sport-btn active" data-sport="football" onclick="pickSport(this)"><span class="sport-em">🏈</span>Football</button>
-        <button class="sport-btn" data-sport="soccer" onclick="pickSport(this)"><span class="sport-em">⚽</span>Soccer</button>
-        <button class="sport-btn" data-sport="basketball" onclick="pickSport(this)"><span class="sport-em">🏀</span>Basketball</button>
-        <button class="sport-btn" data-sport="baseball" onclick="pickSport(this)"><span class="sport-em">⚾</span>Baseball</button>
-        <button class="sport-btn" data-sport="hockey" onclick="pickSport(this)"><span class="sport-em">🏒</span>Hockey</button>
-        <button class="sport-btn" data-sport="tennis" onclick="pickSport(this)"><span class="sport-em">🎾</span>Tennis</button>
-        <button class="sport-btn" data-sport="mma" onclick="pickSport(this)"><span class="sport-em">🥊</span>MMA/Boxing</button>
-        <button class="sport-btn" data-sport="esports" onclick="pickSport(this)"><span class="sport-em">🎮</span>Esports</button>
-        <button class="sport-btn" data-sport="extreme" onclick="pickSport(this)"><span class="sport-em">🛹</span>Extreme</button>
+        <button class="spd" id="spdBtn" onclick="cycleSpeed()">1×</button>
       </div>
     </div>
 
-    <!-- Hook Maker -->
-    <div class="side-sec">
-      <div class="side-title">🎣 Hook Maker</div>
-      <div class="hook-grid" id="hookGrid"></div>
-      <div class="inp-group">
-        <label class="inp-label">Custom Hook Text</label>
-        <textarea class="txt-inp" id="hookTxt" rows="2" placeholder="Type your hook here… 🔥" oninput="redraw()"></textarea>
+    <!-- Timeline -->
+    <div class="tl-wrap">
+      <div class="tl-hdr">
+        <span class="sec-lbl">✂️ Clip Timeline</span>
+        <span class="cdur ok" id="cdur">0:00 / 60s</span>
       </div>
-      <div class="inp-group">
-        <label class="inp-label">Text Position</label>
-        <div class="pos-grid">
-          <button class="pos-btn" data-p="tl" onclick="setPos(this)">↖ TL</button>
-          <button class="pos-btn active" data-p="tc" onclick="setPos(this)">↑ Top</button>
-          <button class="pos-btn" data-p="tr" onclick="setPos(this)">↗ TR</button>
-          <button class="pos-btn" data-p="ml" onclick="setPos(this)">← Mid-L</button>
-          <button class="pos-btn" data-p="mc" onclick="setPos(this)">✛ Center</button>
-          <button class="pos-btn" data-p="mr" onclick="setPos(this)">→ Mid-R</button>
-          <button class="pos-btn" data-p="bl" onclick="setPos(this)">↙ BL</button>
-          <button class="pos-btn" data-p="bc" onclick="setPos(this)">↓ Bottom</button>
-          <button class="pos-btn" data-p="br" onclick="setPos(this)">↘ BR</button>
+
+      <!-- Thumbnail strip -->
+      <div class="thumb-strip" id="thumbStrip">
+        <div class="thumb-loading" id="thumbLoad">Generating thumbnails…</div>
+      </div>
+
+      <!-- Track -->
+      <div class="tl-track" id="tlTrack">
+        <div class="tl-bg-grad"></div>
+        <div class="tl-sel" id="tlSel"></div>
+        <div class="tl-h" id="hS"><div class="hb"></div><div class="hb"></div><div class="hb"></div></div>
+        <div class="tl-h end" id="hE"><div class="hb"></div><div class="hb"></div><div class="hb"></div></div>
+        <div class="tl-head" id="tlHd"></div>
+      </div>
+
+      <div class="tl-stamps">
+        <span id="ts0">0:00</span><span id="ts1">—</span><span id="ts2">—</span><span id="ts3">—</span><span id="ts4">—</span>
+      </div>
+
+      <div class="clip-btns">
+        <button class="mark-btn in" onclick="setIN()">⬅ IN <span class="mt" id="mIn">0:00</span></button>
+        <button class="mark-btn out" onclick="setOUT()">OUT ➡ <span class="mt" id="mOut">0:00</span></button>
+        <button class="mark-btn prev" onclick="previewClip()">▶ Preview</button>
+      </div>
+      <div class="kb-hint"><kbd>I</kbd> IN &nbsp;·&nbsp; <kbd>O</kbd> OUT &nbsp;·&nbsp; <kbd>Space</kbd> Play &nbsp;·&nbsp; <kbd>←</kbd><kbd>→</kbd> seek &nbsp;·&nbsp; <kbd>P</kbd> preview</div>
+    </div>
+
+  </div><!-- /ws -->
+
+  <video id="vid" style="display:none" crossorigin="anonymous" preload="auto"></video>
+</div><!-- /main -->
+
+<!-- ─── SIDE PANEL ─── -->
+<div class="side">
+
+  <!-- Sport -->
+  <div class="ss">
+    <div class="st" onclick="toggleSec(this)">🏅 Sport Type <span class="arr">▾</span></div>
+    <div class="ss-body">
+      <div class="sport-g" id="sportG">
+        <button class="sp-btn on" data-sport="football" onclick="pickSport(this)"><span class="sp-em">🏈</span>Football</button>
+        <button class="sp-btn" data-sport="soccer" onclick="pickSport(this)"><span class="sp-em">⚽</span>Soccer</button>
+        <button class="sp-btn" data-sport="basketball" onclick="pickSport(this)"><span class="sp-em">🏀</span>Basketball</button>
+        <button class="sp-btn" data-sport="baseball" onclick="pickSport(this)"><span class="sp-em">⚾</span>Baseball</button>
+        <button class="sp-btn" data-sport="hockey" onclick="pickSport(this)"><span class="sp-em">🏒</span>Hockey</button>
+        <button class="sp-btn" data-sport="tennis" onclick="pickSport(this)"><span class="sp-em">🎾</span>Tennis</button>
+        <button class="sp-btn" data-sport="mma" onclick="pickSport(this)"><span class="sp-em">🥊</span>MMA</button>
+        <button class="sp-btn" data-sport="esports" onclick="pickSport(this)"><span class="sp-em">🎮</span>Esports</button>
+        <button class="sp-btn" data-sport="extreme" onclick="pickSport(this)"><span class="sp-em">🛹</span>Extreme</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hook Maker -->
+  <div class="ss">
+    <div class="st" onclick="toggleSec(this)">🎣 Hook Maker <span class="arr">▾</span></div>
+    <div class="ss-body">
+      <div class="hook-g" id="hookG"></div>
+      <div class="ig">
+        <label class="il">Custom Hook Text</label>
+        <textarea class="inp" id="hookTxt" rows="2" placeholder="Type your hook… 🔥"></textarea>
+      </div>
+      <div class="ig">
+        <label class="il">Text Animation</label>
+        <div class="anim-g">
+          <button class="anim-btn on" data-anim="static" onclick="pickAnim(this)"><span class="a-ic">💬</span>Static</button>
+          <button class="anim-btn" data-anim="slideup" onclick="pickAnim(this)"><span class="a-ic">⬆️</span>Slide Up</button>
+          <button class="anim-btn" data-anim="zoom" onclick="pickAnim(this)"><span class="a-ic">🔍</span>Zoom In</button>
+          <button class="anim-btn" data-anim="shake" onclick="pickAnim(this)"><span class="a-ic">💥</span>Shake</button>
+          <button class="anim-btn" data-anim="typewriter" onclick="pickAnim(this)"><span class="a-ic">⌨️</span>Typewriter</button>
+          <button class="anim-btn" data-anim="pulse" onclick="pickAnim(this)"><span class="a-ic">🫀</span>Pulse</button>
         </div>
       </div>
-      <div class="inp-group">
-        <label class="inp-label">Text Color</label>
-        <div class="color-row">
-          <div class="col-sw active" style="background:#fff" data-c="#fff" onclick="pickColor(this)"></div>
+      <div class="ig">
+        <label class="il">Text Position</label>
+        <div class="pos-g">
+          <button class="pos-btn" data-p="tl" onclick="pickPos(this)">↖ TL</button>
+          <button class="pos-btn on" data-p="tc" onclick="pickPos(this)">↑ Top</button>
+          <button class="pos-btn" data-p="tr" onclick="pickPos(this)">↗ TR</button>
+          <button class="pos-btn" data-p="ml" onclick="pickPos(this)">← ML</button>
+          <button class="pos-btn" data-p="mc" onclick="pickPos(this)">✛ Mid</button>
+          <button class="pos-btn" data-p="mr" onclick="pickPos(this)">MR →</button>
+          <button class="pos-btn" data-p="bl" onclick="pickPos(this)">↙ BL</button>
+          <button class="pos-btn" data-p="bc" onclick="pickPos(this)">↓ Bot</button>
+          <button class="pos-btn" data-p="br" onclick="pickPos(this)">BR ↘</button>
+        </div>
+      </div>
+      <div class="ig">
+        <label class="il">Text Color</label>
+        <div class="col-r">
+          <div class="col-sw on" style="background:#fff" data-c="#fff" onclick="pickColor(this)"></div>
           <div class="col-sw" style="background:#ff2d55" data-c="#ff2d55" onclick="pickColor(this)"></div>
           <div class="col-sw" style="background:#ff6b00" data-c="#ff6b00" onclick="pickColor(this)"></div>
           <div class="col-sw" style="background:#ffd60a" data-c="#ffd60a" onclick="pickColor(this)"></div>
           <div class="col-sw" style="background:#00d4ff" data-c="#00d4ff" onclick="pickColor(this)"></div>
           <div class="col-sw" style="background:#30d158" data-c="#30d158" onclick="pickColor(this)"></div>
           <div class="col-sw" style="background:#bf5af2" data-c="#bf5af2" onclick="pickColor(this)"></div>
+          <div class="col-sw" style="background:#ff375f" data-c="#ff375f" onclick="pickColor(this)"></div>
           <div class="col-sw" style="background:#000;border:1px solid #444" data-c="#000" onclick="pickColor(this)"></div>
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- Score Overlay -->
-    <div class="side-sec">
-      <div class="side-title">🏟️ Score Overlay</div>
-      <div class="score-wrap">
-        <div class="score-team">
-          <input class="txt-inp team-inp" id="tmHome" placeholder="HOME" maxlength="5" oninput="redraw()">
-          <input class="score-num txt-inp" id="scHome" type="number" value="0" min="0" max="999" oninput="redraw()">
-        </div>
-        <div class="score-vs">VS</div>
-        <div class="score-team">
-          <input class="txt-inp team-inp" id="tmAway" placeholder="AWAY" maxlength="5" oninput="redraw()">
-          <input class="score-num txt-inp" id="scAway" type="number" value="0" min="0" max="999" oninput="redraw()">
-        </div>
+  <!-- Lower Third -->
+  <div class="ss">
+    <div class="st" onclick="toggleSec(this)">📺 Lower Third <span class="arr">▾</span></div>
+    <div class="ss-body">
+      <div class="ig">
+        <label class="il">Name / Title</label>
+        <input class="inp" id="ltName" placeholder="Player Name" oninput="" maxlength="30">
       </div>
-      <div class="inp-group">
-        <label class="inp-label">Period / Time / Round</label>
-        <input class="txt-inp" id="period" placeholder="e.g. Q4 · 1:23 or 2nd Half" oninput="redraw()" style="text-align:center">
+      <div class="ig">
+        <label class="il">Subtitle / Stat</label>
+        <input class="inp" id="ltSub" placeholder="Position · Team · Stat" oninput="" maxlength="40">
       </div>
-    </div>
-
-    <!-- Effects -->
-    <div class="side-sec">
-      <div class="side-title">✨ Visual Effects</div>
-      <div class="fx-grid">
-        <div class="fx-toggle" id="fx-vignette" onclick="toggleFX('vignette')">
-          <div class="fx-ic">🌑</div><div class="fx-nm">Vignette</div><div class="fx-bar"></div>
-        </div>
-        <div class="fx-toggle" id="fx-letterbox" onclick="toggleFX('letterbox')">
-          <div class="fx-ic">🎬</div><div class="fx-nm">Letterbox</div><div class="fx-bar"></div>
-        </div>
-        <div class="fx-toggle" id="fx-vivid" onclick="toggleFX('vivid')">
-          <div class="fx-ic">🎨</div><div class="fx-nm">Vivid Color</div><div class="fx-bar"></div>
-        </div>
-        <div class="fx-toggle" id="fx-slowmo" onclick="toggleFX('slowmo')">
-          <div class="fx-ic">🐌</div><div class="fx-nm">Slow Motion</div><div class="fx-bar"></div>
-        </div>
-        <div class="fx-toggle on" id="fx-shadow" onclick="toggleFX('shadow')">
-          <div class="fx-ic">🔲</div><div class="fx-nm">Text Shadow</div><div class="fx-bar"></div>
-        </div>
-        <div class="fx-toggle" id="fx-flash" onclick="toggleFX('flash')">
-          <div class="fx-ic">⚡</div><div class="fx-nm">Flash Intro</div><div class="fx-bar"></div>
+      <div class="ig">
+        <label class="il">Accent Color</label>
+        <div class="lt-colors">
+          <div class="lt-col on" style="background:#ff2d55" data-c="#ff2d55" onclick="pickLtColor(this)"></div>
+          <div class="lt-col" style="background:#00d4ff" data-c="#00d4ff" onclick="pickLtColor(this)"></div>
+          <div class="lt-col" style="background:#ffd60a" data-c="#ffd60a" onclick="pickLtColor(this)"></div>
+          <div class="lt-col" style="background:#30d158" data-c="#30d158" onclick="pickLtColor(this)"></div>
+          <div class="lt-col" style="background:#bf5af2" data-c="#bf5af2" onclick="pickLtColor(this)"></div>
+          <div class="lt-col" style="background:#ff6b00" data-c="#ff6b00" onclick="pickLtColor(this)"></div>
         </div>
       </div>
     </div>
+  </div>
 
-    <div class="tip-box">
-      <strong>💡 Pro Tip:</strong> Press <strong>I</strong> &amp; <strong>O</strong> while playing to mark IN/OUT points on the fly. Max 60 seconds per clip — the optimal length for sports highlights on social media!
-    </div>
-
-    <!-- Export -->
-    <div class="export-sec">
-      <button class="btn-export" id="exportBtn" onclick="exportClip()" disabled>
-        ⬇&nbsp; Export Highlight Clip
-      </button>
-      <div class="exp-prog" id="expProg">
-        <div class="prog-track"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
-        <div class="prog-txt" id="progTxt">Rendering your highlight…</div>
+  <!-- Score -->
+  <div class="ss">
+    <div class="st" onclick="toggleSec(this)">🏟️ Score Overlay <span class="arr">▾</span></div>
+    <div class="ss-body">
+      <div class="score-g">
+        <div class="sc-t">
+          <input class="inp sc-tnm" id="tmH" placeholder="HOME" maxlength="5">
+          <input class="sc-num inp" id="scH" type="number" value="0" min="0" max="999">
+        </div>
+        <div class="sc-vs">VS</div>
+        <div class="sc-t">
+          <input class="inp sc-tnm" id="tmA" placeholder="AWAY" maxlength="5">
+          <input class="sc-num inp" id="scA" type="number" value="0" min="0" max="999">
+        </div>
+      </div>
+      <div class="ig">
+        <label class="il">Period / Time / Round</label>
+        <input class="inp" id="period" placeholder="Q4 · 1:23  or  2nd Half" style="text-align:center">
       </div>
     </div>
+  </div>
 
-  </div><!-- /side-panel -->
+  <!-- Color Grade -->
+  <div class="ss">
+    <div class="st" onclick="toggleSec(this)">🎨 Color Grade <span class="arr">▾</span></div>
+    <div class="ss-body">
+      <div class="grade-g">
+        <button class="grade-btn on" data-grade="normal" onclick="pickGrade(this)">
+          <div class="grade-swatch" style="background:linear-gradient(135deg,#555,#999)"></div>
+          <div class="grade-lbl">Normal</div>
+        </button>
+        <button class="grade-btn" data-grade="warm" onclick="pickGrade(this)">
+          <div class="grade-swatch" style="background:linear-gradient(135deg,#8b4513,#ff8c00,#ffd700)"></div>
+          <div class="grade-lbl">Warm</div>
+        </button>
+        <button class="grade-btn" data-grade="cold" onclick="pickGrade(this)">
+          <div class="grade-swatch" style="background:linear-gradient(135deg,#0d1b4b,#1e90ff,#87ceeb)"></div>
+          <div class="grade-lbl">Cold</div>
+        </button>
+        <button class="grade-btn" data-grade="dramatic" onclick="pickGrade(this)">
+          <div class="grade-swatch" style="background:linear-gradient(135deg,#000,#222,#555,#000)"></div>
+          <div class="grade-lbl">Dramatic</div>
+        </button>
+        <button class="grade-btn" data-grade="vintage" onclick="pickGrade(this)">
+          <div class="grade-swatch" style="background:linear-gradient(135deg,#8b7355,#c8a96e,#e8d5a3)"></div>
+          <div class="grade-lbl">Vintage</div>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Effects -->
+  <div class="ss">
+    <div class="st" onclick="toggleSec(this)">✨ Visual Effects <span class="arr">▾</span></div>
+    <div class="ss-body">
+      <div class="fx-g">
+        <div class="fx" id="fx-vignette" onclick="toggleFX('vignette')"><div class="fx-i">🌑</div><div class="fx-n">Vignette</div><div class="fx-bar"></div></div>
+        <div class="fx" id="fx-letterbox" onclick="toggleFX('letterbox')"><div class="fx-i">🎬</div><div class="fx-n">Letterbox</div><div class="fx-bar"></div></div>
+        <div class="fx" id="fx-vivid" onclick="toggleFX('vivid')"><div class="fx-i">🎨</div><div class="fx-n">Vivid Color</div><div class="fx-bar"></div></div>
+        <div class="fx" id="fx-slowmo" onclick="toggleFX('slowmo')"><div class="fx-i">🐌</div><div class="fx-n">Slow Motion</div><div class="fx-bar"></div></div>
+        <div class="fx on" id="fx-shadow" onclick="toggleFX('shadow')"><div class="fx-i">🔲</div><div class="fx-n">Text Shadow</div><div class="fx-bar"></div></div>
+        <div class="fx" id="fx-flash" onclick="toggleFX('flash')"><div class="fx-i">⚡</div><div class="fx-n">Flash Intro</div><div class="fx-bar"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tip"><strong>💡 Pro Tip:</strong> Use <strong>I</strong> + <strong>O</strong> while the video plays to mark highlights on the fly. Keep clips under 30s for maximum reach on Reels & TikTok!</div>
+
+  <!-- Export -->
+  <div class="exp-sec">
+    <button class="btn-exp" id="expBtn" onclick="exportClip()" disabled>
+      ⬇&nbsp; Export Highlight Clip
+    </button>
+    <div class="ep" id="epWrap">
+      <div class="ep-track"><div class="ep-fill" id="epFill" style="width:0%"></div></div>
+      <div class="ep-txt" id="epTxt">Rendering your highlight…</div>
+    </div>
+  </div>
+
+</div><!-- /side -->
 </div><!-- /app -->
 
 <!-- Keyboard shortcuts modal -->
-<div class="kbd-shortcuts" id="kbdModal" onclick="if(event.target===this)this.classList.remove('show')">
+<div class="kbd-ov" id="kbdOv" onclick="if(event.target===this)this.classList.remove('show')">
   <div class="kbd-box">
     <div class="kbd-title">⌨️ Keyboard Shortcuts</div>
     <div class="kbd-row"><span class="kbd-action">Play / Pause</span><span class="kbd-key"><kbd>Space</kbd></span></div>
     <div class="kbd-row"><span class="kbd-action">Set IN point</span><span class="kbd-key"><kbd>I</kbd></span></div>
     <div class="kbd-row"><span class="kbd-action">Set OUT point</span><span class="kbd-key"><kbd>O</kbd></span></div>
     <div class="kbd-row"><span class="kbd-action">Preview clip</span><span class="kbd-key"><kbd>P</kbd></span></div>
-    <div class="kbd-row"><span class="kbd-action">Seek ±1 second</span><span class="kbd-key"><kbd>←</kbd> <kbd>→</kbd></span></div>
-    <div class="kbd-row"><span class="kbd-action">Seek ±5 seconds</span><span class="kbd-key"><kbd>⇧</kbd>+<kbd>←</kbd> <kbd>→</kbd></span></div>
+    <div class="kbd-row"><span class="kbd-action">Seek ±1 second</span><span class="kbd-key"><kbd>←</kbd><kbd>→</kbd></span></div>
+    <div class="kbd-row"><span class="kbd-action">Seek ±5 seconds</span><span class="kbd-key"><kbd>⇧</kbd>+<kbd>←</kbd><kbd>→</kbd></span></div>
     <div class="kbd-row"><span class="kbd-action">Cycle playback speed</span><span class="kbd-key"><kbd>S</kbd></span></div>
     <div class="kbd-row"><span class="kbd-action">Export clip</span><span class="kbd-key"><kbd>E</kbd></span></div>
-    <div class="kbd-row"><span class="kbd-action">Keyboard shortcuts</span><span class="kbd-key"><kbd>?</kbd></span></div>
-    <button class="kbd-close" onclick="document.getElementById('kbdModal').classList.remove('show')">Close</button>
+    <div class="kbd-row"><span class="kbd-action">Show shortcuts</span><span class="kbd-key"><kbd>?</kbd></span></div>
+    <button class="btn-kclose" onclick="document.getElementById('kbdOv').classList.remove('show')">Close</button>
   </div>
 </div>
 
-<!-- Toast -->
 <div class="toast" id="toast"></div>
 
 <script>
-/* ═══════════════════════════════════════════════
+/* ══════════════════════════════════════════════════
    STATE
-════════════════════════════════════════════════ */
+══════════════════════════════════════════════════ */
 const S = {
-  loaded: false,
-  duration: 0,
-  startT: 0,
-  endT: 0,
-  pos: 'tc',         // text position code
-  color: '#fff',
-  sport: 'football',
-  effects: { vignette:false, letterbox:false, vivid:false, slowmo:false, shadow:true, flash:false },
-  flashAlpha: 0,
-  animT: 0,
-  speeds: [0.25, 0.5, 1, 1.5, 2],
-  spdIdx: 2,
-  isPlaying: false,
-  isRecording: false,
-  raf: null
+  loaded:false, duration:0, startT:0, endT:0,
+  playing:false, recording:false,
+  pos:'tc', color:'#fff', anim:'static', animT:0, animStart:0,
+  sport:'football', grade:'normal', ltColor:'#ff2d55',
+  fmt:'16:9',
+  flashAlpha:0,
+  speeds:[0.25,0.5,1,1.5,2], sIdx:2,
+  effects:{vignette:false,letterbox:false,vivid:false,slowmo:false,shadow:true,flash:false},
+  thumbs:[], thumbsOk:false
 };
 
-/* ═══════════════════════════════════════════════
-   HOOK TEMPLATES  (per sport)
-════════════════════════════════════════════════ */
+/* ══════════════════════════════════════════════════
+   HOOK TEMPLATES
+══════════════════════════════════════════════════ */
 const HOOKS = {
-  football: [
-    ['🏈 WATCH TILL THE END','🔥'],['💥 UNREAL TOUCHDOWN!','🏈'],
-    ['😱 NOBODY SAW THIS COMING','😱'],['🏆 PLAY OF THE SEASON','🏆']
-  ],
-  soccer: [
-    ['⚽ GOOOOOAL!!!','🔥'],['😤 WHAT A STRIKE!','💥'],
-    ['🤯 SKILL OF THE YEAR','⚽'],['🎯 PERFECT FINISH!','🎯']
-  ],
-  basketball: [
-    ['🏀 POSTER DUNK!','💥'],['🔥 BUZZER BEATER!','🏀'],
-    ['😤 NOBODY STOPPING HIM','🔥'],['🤯 TOP-OF-THE-KEY THREE!','🎯']
-  ],
-  baseball: [
-    ['⚾ GONE! HOME RUN!','💥'],['🔥 IMPOSSIBLE CATCH!','😱'],
-    ['💨 97 MPH HEATER!','⚾'],['🏆 CLUTCH MOMENT!','🏆']
-  ],
-  hockey: [
-    ['🏒 HE SCORES!!!','🔥'],['💥 UNBELIEVABLE SAVE!','😱'],
-    ['🏒 END-TO-END RUSH!','💨'],['🏆 GAME WINNER!','🏆']
-  ],
-  tennis: [
-    ['🎾 ACE! NO CHANCE!','🔥'],['😱 IMPOSSIBLE RETURN!','💥'],
-    ['🏆 MATCH POINT!','🎾'],['🤯 SHOT OF THE TOURNAMENT!','🎯']
-  ],
-  mma: [
-    ['🥊 KNOCKOUT INCOMING!','💥'],['😤 NOBODY GETS UP FROM THIS','🔥'],
-    ['🤯 SUBMISSION OUT OF NOWHERE!','😱'],['🏆 HIGHLIGHT REEL KO!','🥊']
-  ],
-  esports: [
-    ['🎮 INSANE PLAY!','🔥'],['💥 1v5 CLUTCH!','😱'],
-    ['🤯 AIMBOT? NO — SKILL!','🎯'],['🏆 PLAY OF THE GAME!','🏆']
-  ],
-  extreme: [
-    ['🛹 DID THAT JUST HAPPEN?!','😱'],['🔥 TRICK OF THE YEAR!','🔥'],
-    ['💥 PERFECT EXECUTION!','🏆'],['🤯 NOBODY BELIEVED HE'D LAND IT!','🎯']
-  ]
+  football:[['🏈 WATCH TILL THE END','🔥'],['💥 UNREAL TOUCHDOWN!','🏈'],['😱 NOBODY SAW THIS COMING','😱'],['🏆 PLAY OF THE SEASON','🏆']],
+  soccer:[['⚽ GOOOOOAL!!!','🔥'],['😤 WHAT A STRIKE!','💥'],['🤯 SKILL OF THE YEAR','⚽'],['🎯 PERFECT FINISH!','🎯']],
+  basketball:[['🏀 POSTER DUNK!','💥'],['🔥 BUZZER BEATER!','🏀'],['😤 NOBODY STOPPING HIM','🔥'],['🤯 IMPOSSIBLE THREE!','🎯']],
+  baseball:[['⚾ GONE! HOME RUN!','💥'],['🔥 IMPOSSIBLE CATCH!','😱'],['💨 97 MPH HEATER!','⚾'],['🏆 CLUTCH MOMENT!','🏆']],
+  hockey:[['🏒 HE SCORES!!!','🔥'],['💥 UNBELIEVABLE SAVE!','😱'],['🏒 END-TO-END RUSH!','💨'],['🏆 GAME WINNER!','🏆']],
+  tennis:[['🎾 ACE! NO CHANCE!','🔥'],['😱 IMPOSSIBLE RETURN!','💥'],['🏆 MATCH POINT!','🎾'],['🤯 SHOT OF THE YEAR!','🎯']],
+  mma:[['🥊 KNOCKOUT INCOMING!','💥'],['😤 NOBODY GETS UP FROM THIS','🔥'],['🤯 SUBMISSION OUT OF NOWHERE!','😱'],['🏆 HIGHLIGHT REEL KO!','🥊']],
+  esports:[['🎮 INSANE PLAY!','🔥'],['💥 1v5 CLUTCH!','😱'],['🤯 AIMBOT? NO — SKILL!','🎯'],['🏆 PLAY OF THE GAME!','🏆']],
+  extreme:[['🛹 DID THAT JUST HAPPEN?!','😱'],['🔥 TRICK OF THE YEAR!','🔥'],['💥 PERFECT EXECUTION!','🏆'],['🤯 NOBODY BELIEVED IT!','🎯']]
 };
 
-/* ═══════════════════════════════════════════════
+/* ══════════════════════════════════════════════════
    ELEMENTS
-════════════════════════════════════════════════ */
-const vid     = document.getElementById('vid');
-const canvas  = document.getElementById('mainCanvas');
-const ctx     = canvas.getContext('2d');
-const upZone  = document.getElementById('uploadZone');
-const ws      = document.getElementById('workspace');
-const fInput  = document.getElementById('fileInput');
+══════════════════════════════════════════════════ */
+const vid    = document.getElementById('vid');
+const canvas = document.getElementById('mainCanvas');
+const ctx    = canvas.getContext('2d');
+const upZone = document.getElementById('uploadZone');
+const ws     = document.getElementById('ws');
 
-/* ═══════════════════════════════════════════════
+/* ══════════════════════════════════════════════════
    INIT
-════════════════════════════════════════════════ */
+══════════════════════════════════════════════════ */
 (function init(){
-  // Drag & drop on upload zone
-  upZone.addEventListener('dragover', e => { e.preventDefault(); upZone.classList.add('drag-over'); });
-  upZone.addEventListener('dragleave', () => upZone.classList.remove('drag-over'));
+  // Drag & drop
+  upZone.addEventListener('dragover', e => { e.preventDefault(); upZone.classList.add('drag'); });
+  upZone.addEventListener('dragleave', () => upZone.classList.remove('drag'));
   upZone.addEventListener('drop', e => {
-    e.preventDefault(); upZone.classList.remove('drag-over');
+    e.preventDefault(); upZone.classList.remove('drag');
     const f = e.dataTransfer.files[0];
-    if (f && f.type.startsWith('video/')) loadVid(f);
-    else toast('⚠️ Please drop a video file', 'error');
+    f && f.type.startsWith('video/') ? loadVid(f) : toast('⚠️ Drop a video file', 'error');
   });
-  fInput.addEventListener('change', e => { if (e.target.files[0]) loadVid(e.target.files[0]); });
-
-  // Also allow dropping on the entire page
   document.addEventListener('dragover', e => e.preventDefault());
   document.addEventListener('drop', e => {
     e.preventDefault();
     const f = e.dataTransfer.files[0];
-    if (f && f.type.startsWith('video/')) loadVid(f);
+    if (f && f.type.startsWith('video/') && !S.loaded) loadVid(f);
   });
+  document.getElementById('fi').addEventListener('change', e => { if (e.target.files[0]) loadVid(e.target.files[0]); });
 
   setupTimeline();
   buildHooks('football');
 })();
 
-/* ═══════════════════════════════════════════════
-   VIDEO LOAD
-════════════════════════════════════════════════ */
+/* ══════════════════════════════════════════════════
+   VIDEO LOAD + THUMBNAIL GENERATION
+══════════════════════════════════════════════════ */
 function loadVid(file) {
-  document.getElementById('loadingOverlay').classList.add('active');
-  document.getElementById('loadingTxt').textContent = 'Loading video…';
+  document.getElementById('loadOv').classList.add('on');
+  document.getElementById('loadTxt').textContent = 'Loading video…';
+  vid.src = URL.createObjectURL(file);
 
-  const url = URL.createObjectURL(file);
-  vid.src = url;
-
-  vid.onloadedmetadata = () => {
+  vid.onloadedmetadata = async () => {
     S.duration = vid.duration;
-    S.startT = 0;
-    S.endT = Math.min(vid.duration, 60);
-    S.loaded = true;
+    S.startT   = 0;
+    S.endT     = Math.min(vid.duration, 60);
+    S.loaded   = true;
 
     canvas.width  = vid.videoWidth  || 1280;
     canvas.height = vid.videoHeight || 720;
 
     upZone.style.display = 'none';
-    ws.classList.add('active');
+    ws.classList.add('on');
 
     const nm = file.name;
-    document.getElementById('sFile').textContent = nm.length > 18 ? nm.slice(0,15)+'…' : nm;
+    document.getElementById('sFile').textContent = nm.length > 16 ? nm.slice(0,13)+'…' : nm;
     document.getElementById('sDur').textContent  = fmt(vid.duration);
     document.getElementById('sRes').textContent  = `${vid.videoWidth}×${vid.videoHeight}`;
+    document.getElementById('mOut').textContent  = fmt(S.endT);
 
-    updateTL();
-    updateClipDur();
-    genWave();
-    document.getElementById('exportBtn').disabled = false;
-    document.getElementById('mtOut').textContent = fmt(S.endT);
+    updateTL(); updateCDur();
+    document.getElementById('expBtn').disabled = false;
 
+    // Start render loop right away
     vid.currentTime = S.startT;
-    document.getElementById('loadingOverlay').classList.remove('active');
-
-    // kick off render loop
-    if (S.raf) cancelAnimationFrame(S.raf);
+    document.getElementById('loadOv').classList.remove('on');
     loop();
 
     toast('✅ Video loaded! Set IN/OUT points', 'success');
+
+    // Generate thumbnails asynchronously
+    await genThumbs();
   };
-  vid.onerror = () => { toast('❌ Could not load video', 'error'); document.getElementById('loadingOverlay').classList.remove('active'); };
+  vid.onerror = () => { toast('❌ Could not load video', 'error'); document.getElementById('loadOv').classList.remove('on'); };
 }
 
-/* ═══════════════════════════════════════════════
-   RENDER LOOP
-════════════════════════════════════════════════ */
-function loop(ts) {
-  S.raf = requestAnimationFrame(loop);
-  if (!S.loaded) return;
+async function genThumbs() {
+  const N = 18;
+  const strip = document.getElementById('thumbStrip');
+  document.getElementById('thumbLoad').style.display = 'flex';
 
-  // Draw video frame
-  try { ctx.drawImage(vid, 0, 0, canvas.width, canvas.height); } catch(e){}
+  const tc = document.createElement('canvas');
+  tc.width = 120; tc.height = 68;
+  const tcx = tc.getContext('2d');
 
-  // Vivid color grade (simple overlay blend)
-  if (S.effects.vivid) {
-    ctx.globalCompositeOperation = 'overlay';
-    ctx.fillStyle = 'rgba(255,140,0,0.08)';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.globalCompositeOperation = 'saturation';
-    ctx.fillStyle = 'rgba(255,0,0,0.15)';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.globalCompositeOperation = 'source-over';
+  S.thumbs = [];
+  const wasPlaying = S.playing;
+  if (wasPlaying) { vid.pause(); S.playing = false; document.getElementById('playBtn').textContent = '▶'; }
+
+  for (let i = 0; i <= N; i++) {
+    vid.currentTime = (i / N) * S.duration;
+    await new Promise(res => { vid.onseeked = res; setTimeout(res, 250); });
+    tcx.drawImage(vid, 0, 0, 120, 68);
+    S.thumbs.push(tc.toDataURL('image/jpeg', 0.55));
   }
+  S.thumbsOk = true;
 
-  // Vignette
-  if (S.effects.vignette) drawVignette();
+  // Render thumbnail cells
+  strip.innerHTML = '';
+  S.thumbs.forEach((url, i) => {
+    const d = document.createElement('div');
+    d.className = 'thumb-cell';
+    d.style.backgroundImage = `url(${url})`;
+    d.title = fmt(i / N * S.duration);
+    d.onclick = () => { vid.currentTime = (i / N) * S.duration; };
+    strip.appendChild(d);
+  });
 
-  // Letterbox
-  if (S.effects.letterbox) drawLetterbox();
+  // Resume
+  vid.currentTime = S.startT;
+  if (wasPlaying) { vid.play(); S.playing = true; document.getElementById('playBtn').textContent = '⏸'; }
+}
 
-  // Flash
+/* ══════════════════════════════════════════════════
+   RENDER LOOP
+══════════════════════════════════════════════════ */
+function loop() {
+  requestAnimationFrame(loop);
+  if (!S.loaded) return;
+  try { ctx.drawImage(vid, 0, 0, canvas.width, canvas.height); } catch(e){ return; }
+
+  applyColorGrade();
+  if (S.effects.vignette)   drawVignette();
+  if (S.effects.letterbox)  drawLetterbox();
   if (S.effects.flash && S.flashAlpha > 0) {
     ctx.fillStyle = `rgba(255,255,255,${S.flashAlpha})`;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     S.flashAlpha = Math.max(0, S.flashAlpha - 0.04);
   }
-
-  // Score overlay
   drawScore();
+  drawLT();
+  S.animT += 0.02;
+  drawHook();
+  if (S.effects.slowmo) drawSlowBadge();
+  drawCropGuide();
 
-  // Hook text
-  S.animT += 0.018;
-  drawHookText();
-
-  // Slow-mo badge
-  if (S.effects.slowmo) drawSlowMoBadge();
-
-  // Update UI
   updateTimeUI();
   updatePlayhead();
 
-  // Auto-stop at OUT point
-  if (S.isPlaying && vid.currentTime >= S.endT) {
-    vid.pause();
-    vid.currentTime = S.startT;
-    S.isPlaying = false;
-    document.getElementById('playBtn').textContent = '▶';
+  // Auto-stop at OUT
+  if (S.playing && vid.currentTime >= S.endT) {
+    vid.pause(); vid.currentTime = S.startT;
+    S.playing = false; document.getElementById('playBtn').textContent = '▶';
   }
 }
 
-/* ═══════════════════════════════════════════════
-   CANVAS EFFECTS
-════════════════════════════════════════════════ */
+/* ══════════════════════════════════════════════════
+   CANVAS DRAWING HELPERS
+══════════════════════════════════════════════════ */
+function applyColorGrade() {
+  const g = S.grade;
+  if (g === 'normal') return;
+  const cw = canvas.width, ch = canvas.height;
+  ctx.save();
+  if (g === 'warm') {
+    ctx.globalCompositeOperation = 'overlay';
+    ctx.fillStyle = 'rgba(255,120,40,0.14)';
+    ctx.fillRect(0,0,cw,ch);
+    ctx.globalCompositeOperation = 'multiply';
+    ctx.fillStyle = 'rgba(255,180,60,0.09)';
+    ctx.fillRect(0,0,cw,ch);
+  } else if (g === 'cold') {
+    ctx.globalCompositeOperation = 'overlay';
+    ctx.fillStyle = 'rgba(40,120,255,0.14)';
+    ctx.fillRect(0,0,cw,ch);
+    ctx.globalCompositeOperation = 'multiply';
+    ctx.fillStyle = 'rgba(100,160,255,0.09)';
+    ctx.fillRect(0,0,cw,ch);
+  } else if (g === 'dramatic') {
+    ctx.globalCompositeOperation = 'multiply';
+    ctx.fillStyle = 'rgba(0,0,0,0.25)';
+    ctx.fillRect(0,0,cw,ch);
+    ctx.globalCompositeOperation = 'overlay';
+    ctx.fillStyle = 'rgba(0,0,0,0.18)';
+    ctx.fillRect(0,0,cw,ch);
+  } else if (g === 'vintage') {
+    ctx.globalCompositeOperation = 'overlay';
+    ctx.fillStyle = 'rgba(180,120,50,0.18)';
+    ctx.fillRect(0,0,cw,ch);
+    ctx.globalCompositeOperation = 'multiply';
+    ctx.fillStyle = 'rgba(200,160,80,0.12)';
+    ctx.fillRect(0,0,cw,ch);
+  }
+  ctx.restore();
+}
+
 function drawVignette() {
   const grd = ctx.createRadialGradient(
-    canvas.width/2, canvas.height/2, canvas.height*0.2,
-    canvas.width/2, canvas.height/2, canvas.width*0.8
+    canvas.width/2,canvas.height/2,canvas.height*0.2,
+    canvas.width/2,canvas.height/2,canvas.width*0.82
   );
-  grd.addColorStop(0, 'rgba(0,0,0,0)');
-  grd.addColorStop(1, 'rgba(0,0,0,0.72)');
+  grd.addColorStop(0,'rgba(0,0,0,0)');
+  grd.addColorStop(1,'rgba(0,0,0,0.76)');
   ctx.fillStyle = grd;
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.fillRect(0,0,canvas.width,canvas.height);
 }
 
 function drawLetterbox() {
-  const bh = Math.round(canvas.height * 0.1);
+  const bh = Math.round(canvas.height*0.1);
   ctx.fillStyle = '#000';
-  ctx.fillRect(0, 0, canvas.width, bh);
-  ctx.fillRect(0, canvas.height - bh, canvas.width, bh);
+  ctx.fillRect(0,0,canvas.width,bh);
+  ctx.fillRect(0,canvas.height-bh,canvas.width,bh);
 }
 
 function drawScore() {
-  const home   = (document.getElementById('tmHome').value || 'HOME').toUpperCase().slice(0,5);
-  const away   = (document.getElementById('tmAway').value || 'AWAY').toUpperCase().slice(0,5);
-  const scH    = document.getElementById('scHome').value ?? '0';
-  const scA    = document.getElementById('scAway').value ?? '0';
+  const home   = (document.getElementById('tmH').value||'HOME').toUpperCase().slice(0,5);
+  const away   = (document.getElementById('tmA').value||'AWAY').toUpperCase().slice(0,5);
+  const scH    = document.getElementById('scH').value ?? '0';
+  const scA    = document.getElementById('scA').value ?? '0';
   const period = document.getElementById('period').value.trim();
-
-  // Only draw if user has changed something meaningful
-  const changed = document.getElementById('tmHome').value || document.getElementById('tmAway').value
+  const changed = document.getElementById('tmH').value || document.getElementById('tmA').value
     || scH !== '0' || scA !== '0' || period;
   if (!changed) return;
 
-  const bw = Math.min(canvas.width * 0.5, 340);
-  const bh = Math.min(canvas.height * 0.1, 50);
-  const lbPad = S.effects.letterbox ? canvas.height * 0.11 : 0;
-  const x = (canvas.width - bw) / 2;
-  const y = canvas.height * 0.06 + lbPad;
+  const lbp = S.effects.letterbox ? canvas.height*0.11 : 0;
+  const bw = Math.min(canvas.width*0.5,340), bh = Math.min(canvas.height*0.1,50);
+  const x = (canvas.width-bw)/2, y = canvas.height*0.055 + lbp;
 
-  // Background
-  ctx.fillStyle = 'rgba(0,0,0,0.78)';
-  pill(x, y, bw, bh, 10);
-  ctx.fill();
-  ctx.strokeStyle = 'rgba(255,214,10,0.7)';
-  ctx.lineWidth = 1.5;
-  pill(x, y, bw, bh, 10);
-  ctx.stroke();
+  ctx.fillStyle = 'rgba(0,0,0,0.8)'; pill(x,y,bw,bh,10); ctx.fill();
+  ctx.strokeStyle = 'rgba(255,214,10,0.75)'; ctx.lineWidth = 1.5; pill(x,y,bw,bh,10); ctx.stroke();
 
-  const fs = Math.max(bh * 0.38, 13);
-  const cy = y + bh / 2;
+  const fs = Math.max(bh*0.38,13), cy = y+bh/2;
   ctx.textBaseline = 'middle';
   ctx.font = `800 ${fs}px "SF Pro Display",Arial,sans-serif`;
 
-  // Home team name
-  ctx.fillStyle = '#fff';
-  ctx.textAlign = 'left';
-  ctx.fillText(home, x + 10, cy);
+  ctx.fillStyle='#fff'; ctx.textAlign='left'; ctx.fillText(home,x+10,cy);
+  ctx.fillStyle='#ffd60a'; ctx.textAlign='left'; ctx.fillText(scH,x+bw*0.28,cy);
+  ctx.fillStyle='rgba(255,255,255,.4)'; ctx.textAlign='center'; ctx.fillText('—',x+bw/2,cy);
+  ctx.fillStyle='#ffd60a'; ctx.textAlign='right'; ctx.fillText(scA,x+bw*0.72,cy);
+  ctx.fillStyle='#fff'; ctx.textAlign='right'; ctx.fillText(away,x+bw-10,cy);
 
-  // Home score
-  ctx.fillStyle = '#ffd60a';
-  ctx.textAlign = 'left';
-  ctx.fillText(scH, x + bw * 0.28, cy);
-
-  // Dash
-  ctx.fillStyle = 'rgba(255,255,255,0.4)';
-  ctx.textAlign = 'center';
-  ctx.fillText('—', x + bw / 2, cy);
-
-  // Away score
-  ctx.fillStyle = '#ffd60a';
-  ctx.textAlign = 'right';
-  ctx.fillText(scA, x + bw * 0.72, cy);
-
-  // Away team
-  ctx.fillStyle = '#fff';
-  ctx.textAlign = 'right';
-  ctx.fillText(away, x + bw - 10, cy);
-
-  // Period line
   if (period) {
-    const pfs = Math.max(fs * 0.65, 11);
+    const pfs = Math.max(fs*0.62,10);
     ctx.font = `700 ${pfs}px Arial`;
-    ctx.fillStyle = 'rgba(255,255,255,0.75)';
+    ctx.fillStyle = 'rgba(255,255,255,.75)';
     ctx.textAlign = 'center';
-    ctx.fillText(period, x + bw / 2, y + bh + pfs * 0.8);
+    ctx.fillText(period, x+bw/2, y+bh+pfs*0.85);
   }
 }
 
-function drawHookText() {
-  const text = document.getElementById('hookTxt').value.trim();
-  if (!text) return;
+function drawLT() {
+  const name = document.getElementById('ltName').value.trim();
+  if (!name) return;
+  const sub  = document.getElementById('ltSub').value.trim();
+  const lbp  = S.effects.letterbox ? canvas.height*0.11 : 0;
 
-  const pulse = 1 + Math.sin(S.animT * 2.2) * 0.028;
-  const floatY = Math.sin(S.animT) * 4;
-  const lbPad = S.effects.letterbox ? canvas.height * 0.11 : 0;
+  const bw   = Math.min(canvas.width*0.52, 480);
+  const nameFz = Math.max(canvas.height*0.035, 16);
+  const subFz  = nameFz*0.65;
+  const bh     = sub ? nameFz+subFz+22 : nameFz+18;
+  const bx     = canvas.width*0.04;
+  const by     = canvas.height*0.7 - lbp;
 
-  const baseSz = Math.max(canvas.width * 0.046, 22);
-  const sz = baseSz * pulse;
+  // Animated slide-in: use S.animT
+  const slideX = Math.min(0, -bw + easeOut(Math.min(1,S.animT*0.4))*bw);
+
+  ctx.save();
+  ctx.translate(slideX, 0);
+
+  // Accent bar
+  ctx.fillStyle = S.ltColor;
+  ctx.fillRect(bx, by, 5, bh);
+
+  // BG
+  ctx.fillStyle = 'rgba(0,0,0,0.78)';
+  ctx.fillRect(bx+5, by, bw-5, bh);
+
+  // Name
+  ctx.font = `800 ${nameFz}px "SF Pro Display",Arial,sans-serif`;
+  ctx.fillStyle = '#fff';
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'top';
+  ctx.fillText(name, bx+14, by+9);
+
+  // Sub
+  if (sub) {
+    ctx.font = `600 ${subFz}px "SF Pro Display",Arial,sans-serif`;
+    ctx.fillStyle = 'rgba(255,255,255,.65)';
+    ctx.fillText(sub, bx+14, by+nameFz+11);
+  }
+
+  ctx.restore();
+}
+
+function drawHook() {
+  const raw = document.getElementById('hookTxt').value.trim();
+  if (!raw) return;
+
+  const lbp = S.effects.letterbox ? canvas.height*0.11 : 0;
+  const baseSz = Math.max(canvas.width*0.046,22);
+  const p = S.pos;
+
+  // Animation
+  let sz = baseSz, alpha = 1, offX = 0, offY = 0;
+  const et = S.animT; // elapsed since load (not start of play)
+  const anim = S.anim;
+
+  // Typewriter: show only first N chars
+  let displayText = raw;
+  if (anim === 'typewriter') {
+    const chars = Math.floor(et * 12);
+    displayText = raw.slice(0, Math.min(chars, raw.length));
+    if (!displayText) return;
+  }
+
+  if (anim === 'slideup')   offY = (1 - easeOut(Math.min(1, et*0.4))) * 80;
+  if (anim === 'zoom')      sz   = baseSz * (0.2 + easeOut(Math.min(1, et*0.35)) * 0.8);
+  if (anim === 'shake')     { offX = Math.sin(et*18)*4*(1/(1+et)); offY = Math.cos(et*13)*3*(1/(1+et)); }
+  if (anim === 'pulse')     sz   = baseSz * (1 + Math.sin(et*3)*0.06);
+  if (anim === 'static')    sz   = baseSz * (1 + Math.sin(et*2.2)*0.025);
 
   ctx.font = `900 ${sz}px "SF Pro Display","Arial Black",Arial,sans-serif`;
   ctx.textBaseline = 'middle';
 
   // Position
-  const pad = canvas.height * 0.1;
-  let tx = canvas.width / 2, ty = canvas.height / 2;
-  let align = 'center';
+  let tx = canvas.width/2, ty = canvas.height/2, align = 'center';
+  const pad = canvas.height*0.1;
 
-  const p = S.pos;
-  if (p.includes('t')) ty = pad + lbPad;
-  else if (p.includes('b')) ty = canvas.height - pad - lbPad;
-  if (p.includes('l')) { tx = canvas.width * 0.05; align = 'left'; }
-  else if (p.includes('r')) { tx = canvas.width * 0.95; align = 'right'; }
+  if (p.includes('t')) ty = pad+lbp;
+  else if (p.includes('b')) ty = canvas.height-pad-lbp;
+  if (p.includes('l')) { tx = canvas.width*0.05; align='left'; }
+  else if (p.includes('r')) { tx = canvas.width*0.95; align='right'; }
 
-  ty += floatY;
+  tx += offX; ty += offY;
   ctx.textAlign = align;
 
-  // Measure for background
-  const m = ctx.measureText(text);
-  const tw = m.width;
-  const bpx = 22, bpy = 12;
-  let bgx = align === 'center' ? tx - tw/2 - bpx
-           : align === 'left'  ? tx - bpx
-           : tx - tw - bpx;
-
-  // Dark pill background
-  ctx.fillStyle = 'rgba(0,0,0,0.6)';
-  pill(bgx, ty - sz/2 - bpy, tw + bpx*2, sz + bpy*2, 10);
+  // Background pill
+  const m = ctx.measureText(displayText);
+  const tw = m.width, bpx=20, bpy=11;
+  const bgx = align==='center' ? tx-tw/2-bpx : align==='left' ? tx-bpx : tx-tw-bpx;
+  ctx.fillStyle = 'rgba(0,0,0,0.62)';
+  pill(bgx, ty-sz/2-bpy, tw+bpx*2, sz+bpy*2, 10);
   ctx.fill();
 
-  // Text shadow
+  // Shadow
   if (S.effects.shadow) {
-    ctx.shadowColor   = 'rgba(0,0,0,0.95)';
-    ctx.shadowBlur    = 14;
-    ctx.shadowOffsetX = 2;
-    ctx.shadowOffsetY = 2;
+    ctx.shadowColor='rgba(0,0,0,0.95)'; ctx.shadowBlur=14;
+    ctx.shadowOffsetX=2; ctx.shadowOffsetY=2;
   }
 
-  // Outline
-  ctx.strokeStyle = 'rgba(0,0,0,0.85)';
-  ctx.lineWidth = sz * 0.09;
-  ctx.strokeText(text, tx, ty);
-
-  // Fill
+  ctx.strokeStyle = 'rgba(0,0,0,.9)';
+  ctx.lineWidth = sz*0.09;
+  ctx.strokeText(displayText, tx, ty);
   ctx.fillStyle = S.color;
-  ctx.fillText(text, tx, ty);
+  ctx.fillText(displayText, tx, ty);
 
-  ctx.shadowColor = 'transparent'; ctx.shadowBlur = 0;
-  ctx.shadowOffsetX = 0; ctx.shadowOffsetY = 0;
+  ctx.shadowColor='transparent'; ctx.shadowBlur=0; ctx.shadowOffsetX=0; ctx.shadowOffsetY=0;
 }
 
-function drawSlowMoBadge() {
-  const bw = Math.min(canvas.width * 0.14, 82);
-  const bh = bw * 0.42;
-  const lbPad = S.effects.letterbox ? canvas.height * 0.12 : 0;
-  const x = canvas.width - bw - 14;
-  const y = canvas.height - bh - 14 - lbPad;
-
+function drawSlowBadge() {
+  const lbp = S.effects.letterbox ? canvas.height*0.12 : 0;
+  const bw = Math.min(canvas.width*0.14,82), bh = bw*0.42;
+  const x = canvas.width-bw-14, y = canvas.height-bh-14-lbp;
   ctx.fillStyle = 'rgba(191,90,242,0.92)';
-  pill(x, y, bw, bh, 7);
-  ctx.fill();
-
-  const fs = Math.max(bh * 0.42, 9);
+  pill(x,y,bw,bh,7); ctx.fill();
+  const fs = Math.max(bh*0.42,9);
   ctx.font = `700 ${fs}px Arial`;
-  ctx.fillStyle = '#fff';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  ctx.fillText('🐌 0.5×', x + bw/2, y + bh/2);
+  ctx.fillStyle = '#fff'; ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.fillText('🐌 0.5×', x+bw/2, y+bh/2);
 }
 
-function pill(x, y, w, h, r) {
+function drawCropGuide() {
+  const cw = canvas.width, ch = canvas.height;
+  const fmt = S.fmt;
+  if (fmt === '16:9') return; // native, no guide needed
+
+  let cropW, cropH;
+  if (fmt === '1:1') { cropH=ch; cropW=ch; }
+  else if (fmt === '9:16') { cropW=ch*(9/16); cropH=ch; }
+  else if (fmt === '4:5') { cropW=ch*(4/5); cropH=ch; }
+  else return;
+
+  if (cropW >= cw) return;
+  const cx = (cw-cropW)/2;
+
+  // Dim sides
+  ctx.fillStyle = 'rgba(0,0,0,0.52)';
+  ctx.fillRect(0,0,cx,ch);
+  ctx.fillRect(cx+cropW,0,cw-(cx+cropW),ch);
+
+  // Frame
+  ctx.strokeStyle = 'rgba(255,214,10,0.85)';
+  ctx.lineWidth = 2;
+  ctx.strokeRect(cx,0,cropW,ch);
+}
+
+/* easeOut helper */
+function easeOut(t){ return 1-Math.pow(1-t,3); }
+
+/* rounded rect helper */
+function pill(x,y,w,h,r){
   ctx.beginPath();
-  ctx.moveTo(x+r,y);
-  ctx.lineTo(x+w-r,y);ctx.quadraticCurveTo(x+w,y,x+w,y+r);
+  ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.quadraticCurveTo(x+w,y,x+w,y+r);
   ctx.lineTo(x+w,y+h-r);ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);
   ctx.lineTo(x+r,y+h);ctx.quadraticCurveTo(x,y+h,x,y+h-r);
   ctx.lineTo(x,y+r);ctx.quadraticCurveTo(x,y,x+r,y);
   ctx.closePath();
 }
 
-/* ═══════════════════════════════════════════════
+/* ══════════════════════════════════════════════════
    PLAYBACK
-════════════════════════════════════════════════ */
-function togglePlay() {
-  if (!S.loaded) return;
-  if (S.isPlaying) {
-    vid.pause(); S.isPlaying = false;
-    document.getElementById('playBtn').textContent = '▶';
-  } else {
-    if (vid.currentTime >= S.endT || vid.currentTime < S.startT) vid.currentTime = S.startT;
-    if (S.effects.flash) S.flashAlpha = 1;
-    applySpeed();
-    vid.play(); S.isPlaying = true;
-    document.getElementById('playBtn').textContent = '⏸';
+══════════════════════════════════════════════════ */
+function togglePlay(){
+  if(!S.loaded) return;
+  if(S.playing){ vid.pause(); S.playing=false; document.getElementById('playBtn').textContent='▶'; }
+  else {
+    if(vid.currentTime>=S.endT||vid.currentTime<S.startT) vid.currentTime=S.startT;
+    if(S.effects.flash) S.flashAlpha=1;
+    applySpeed(); vid.play(); S.playing=true; document.getElementById('playBtn').textContent='⏸';
+    S.animT=0; // reset text animation
   }
 }
-
-function previewClip() {
-  if (!S.loaded) return;
-  vid.currentTime = S.startT;
-  if (S.effects.flash) S.flashAlpha = 1;
-  applySpeed();
-  vid.play(); S.isPlaying = true;
-  document.getElementById('playBtn').textContent = '⏸';
+function previewClip(){
+  if(!S.loaded) return;
+  vid.currentTime=S.startT;
+  if(S.effects.flash) S.flashAlpha=1;
+  S.animT=0;
+  applySpeed(); vid.play(); S.playing=true; document.getElementById('playBtn').textContent='⏸';
+}
+function applySpeed(){ vid.playbackRate = S.effects.slowmo ? 0.5 : S.speeds[S.sIdx]; }
+function cycleSpeed(){
+  if(S.effects.slowmo){ toast('⚠️ Disable Slow Motion first','error'); return; }
+  S.sIdx=(S.sIdx+1)%S.speeds.length;
+  const sp=S.speeds[S.sIdx];
+  vid.playbackRate=sp;
+  document.getElementById('spdBtn').textContent=sp+'×';
+  document.getElementById('sSp').textContent=sp+'×';
+}
+function seekClick(e){
+  if(!S.loaded) return;
+  const r=e.currentTarget.getBoundingClientRect();
+  vid.currentTime=Math.max(0,Math.min(S.duration,((e.clientX-r.left)/r.width)*S.duration));
+}
+function updateTimeUI(){
+  document.getElementById('tDisp').textContent=`${fmt(vid.currentTime)} / ${fmt(S.duration)}`;
+  document.getElementById('pbarFill').style.width=S.duration>0?(vid.currentTime/S.duration*100)+'%':'0%';
+  document.getElementById('sClip').textContent=fmt(S.endT-S.startT);
+}
+function updatePlayhead(){
+  if(!S.duration) return;
+  document.getElementById('tlHd').style.left=(vid.currentTime/S.duration*100)+'%';
 }
 
-function applySpeed() {
-  vid.playbackRate = S.effects.slowmo ? 0.5 : S.speeds[S.spdIdx];
-}
-
-function cycleSpeed() {
-  if (S.effects.slowmo) { toast('⚠️ Disable Slow Motion first', 'error'); return; }
-  S.spdIdx = (S.spdIdx + 1) % S.speeds.length;
-  const sp = S.speeds[S.spdIdx];
-  vid.playbackRate = sp;
-  document.getElementById('spdBtn').textContent = sp + '×';
-  document.getElementById('sSp').textContent = sp + '×';
-}
-
-function seekClick(e) {
-  if (!S.loaded) return;
-  const r = e.currentTarget.getBoundingClientRect();
-  vid.currentTime = ((e.clientX - r.left) / r.width) * S.duration;
-}
-
-function updateTimeUI() {
-  document.getElementById('timeDis').textContent = `${fmt(vid.currentTime)} / ${fmt(S.duration)}`;
-  document.getElementById('pbarFill').style.width = S.duration > 0 ? (vid.currentTime / S.duration * 100) + '%' : '0%';
-  document.getElementById('sClip').textContent = fmt(S.endT - S.startT) + 's';
-}
-
-function updatePlayhead() {
-  if (!S.duration) return;
-  document.getElementById('tlHead').style.left = (vid.currentTime / S.duration * 100) + '%';
-}
-
-/* ═══════════════════════════════════════════════
+/* ══════════════════════════════════════════════════
    TIMELINE
-════════════════════════════════════════════════ */
-let dragging = null;
-
-function setupTimeline() {
-  const hS = document.getElementById('hStart');
-  const hE = document.getElementById('hEnd');
-
-  hS.addEventListener('mousedown',  e => startDrag(e,'start'));
-  hE.addEventListener('mousedown',  e => startDrag(e,'end'));
-  hS.addEventListener('touchstart', e => startDrag(e.touches[0],'start'), {passive:true});
-  hE.addEventListener('touchstart', e => startDrag(e.touches[0],'end'),   {passive:true});
-
-  document.getElementById('tlTrack').addEventListener('click', e => {
-    if (dragging) return;
-    const r = e.currentTarget.getBoundingClientRect();
-    vid.currentTime = Math.max(0, Math.min(S.duration, ((e.clientX - r.left) / r.width) * S.duration));
+══════════════════════════════════════════════════ */
+let drag=null;
+function setupTimeline(){
+  const hS=document.getElementById('hS'), hE=document.getElementById('hE');
+  hS.addEventListener('mousedown', e=>startDrag(e,'s'));
+  hE.addEventListener('mousedown', e=>startDrag(e,'e'));
+  hS.addEventListener('touchstart', e=>startDrag(e.touches[0],'s'),{passive:true});
+  hE.addEventListener('touchstart', e=>startDrag(e.touches[0],'e'),{passive:true});
+  document.getElementById('tlTrack').addEventListener('click', e=>{
+    if(drag) return;
+    const r=e.currentTarget.getBoundingClientRect();
+    vid.currentTime=Math.max(0,Math.min(S.duration,((e.clientX-r.left)/r.width)*S.duration));
   });
-
   document.addEventListener('mousemove', onDrag);
   document.addEventListener('mouseup',   stopDrag);
-  document.addEventListener('touchmove', e => onDrag(e.touches[0]), {passive:true});
-  document.addEventListener('touchend',  stopDrag, {passive:true});
+  document.addEventListener('touchmove', e=>onDrag(e.touches[0]),{passive:true});
+  document.addEventListener('touchend',  stopDrag,{passive:true});
 }
-
-function startDrag(e, h) {
-  dragging = h;
-  document.getElementById(h === 'start' ? 'hStart' : 'hEnd').classList.add('drag');
-  e.preventDefault && e.preventDefault();
-}
-
-function onDrag(e) {
-  if (!dragging || !S.loaded) return;
-  const r = document.getElementById('tlTrack').getBoundingClientRect();
-  let pct = Math.max(0, Math.min(1, (e.clientX - r.left) / r.width));
-  let t = pct * S.duration;
-
-  if (dragging === 'start') {
-    t = Math.max(0, Math.min(t, S.endT - 0.5));
-    S.startT = t;
-    if (S.endT - S.startT > 60) S.endT = S.startT + 60;
+function startDrag(e,h){ drag=h; document.getElementById(h==='s'?'hS':'hE').classList.add('drag'); e.preventDefault&&e.preventDefault(); }
+function onDrag(e){
+  if(!drag||!S.loaded) return;
+  const r=document.getElementById('tlTrack').getBoundingClientRect();
+  let t=Math.max(0,Math.min(1,(e.clientX-r.left)/r.width))*S.duration;
+  if(drag==='s'){
+    t=Math.max(0,Math.min(t,S.endT-0.5)); S.startT=t;
+    if(S.endT-S.startT>60) S.endT=S.startT+60;
   } else {
-    t = Math.max(S.startT + 0.5, Math.min(t, S.duration));
-    if (t - S.startT > 60) { t = S.startT + 60; flashMax(); }
-    S.endT = t;
+    t=Math.max(S.startT+0.5,Math.min(t,S.duration));
+    if(t-S.startT>60){ t=S.startT+60; flashMaxWarn(); }
+    S.endT=t;
   }
+  document.getElementById('mIn').textContent=fmt(S.startT);
+  document.getElementById('mOut').textContent=fmt(S.endT);
+  vid.currentTime = drag==='s' ? S.startT : S.endT;
+  updateTL(); updateCDur();
+}
+function stopDrag(){ if(drag){ document.getElementById(drag==='s'?'hS':'hE').classList.remove('drag'); drag=null; } }
 
-  document.getElementById('mtIn').textContent  = fmt(S.startT);
-  document.getElementById('mtOut').textContent = fmt(S.endT);
-  vid.currentTime = dragging === 'start' ? S.startT : S.endT;
-  updateTL();
-  updateClipDur();
+let mwt;
+function flashMaxWarn(){
+  clearTimeout(mwt); const el=document.getElementById('cdur');
+  el.classList.add('bad'); mwt=setTimeout(()=>el.classList.remove('bad'),700);
+}
+function updateTL(){
+  if(!S.loaded||!S.duration) return;
+  const sp=(S.startT/S.duration*100)+'%', ep=(S.endT/S.duration*100)+'%';
+  document.getElementById('hS').style.left=sp;
+  document.getElementById('hE').style.left=ep;
+  const sel=document.getElementById('tlSel');
+  sel.style.left=sp; sel.style.width=((S.endT-S.startT)/S.duration*100)+'%';
+  const d=S.duration;
+  ['ts0','ts1','ts2','ts3','ts4'].forEach((id,i)=>{ document.getElementById(id).textContent=fmt(d*i/4); });
+}
+function updateCDur(){
+  const dur=S.endT-S.startT;
+  const el=document.getElementById('cdur');
+  el.textContent=`${fmt(dur)} / 60s`;
+  el.className='cdur '+(dur>=59?'bad':dur>=45?'warn':'ok');
+}
+function setIN(){
+  if(!S.loaded) return;
+  S.startT=vid.currentTime;
+  if(S.endT<=S.startT) S.endT=Math.min(S.duration,S.startT+10);
+  if(S.endT-S.startT>60) S.endT=S.startT+60;
+  document.getElementById('mIn').textContent=fmt(S.startT);
+  document.getElementById('mOut').textContent=fmt(S.endT);
+  updateTL(); updateCDur(); toast('⬅ IN set at '+fmt(S.startT),'info');
+}
+function setOUT(){
+  if(!S.loaded) return;
+  let t=vid.currentTime;
+  if(t<=S.startT) t=S.startT+0.5;
+  if(t-S.startT>60){ t=S.startT+60; toast('⚠️ Max 60s — trimmed!','error'); }
+  S.endT=t;
+  document.getElementById('mOut').textContent=fmt(S.endT);
+  updateTL(); updateCDur(); toast('OUT set at '+fmt(S.endT),'info');
 }
 
-function stopDrag() {
-  if (dragging) {
-    document.getElementById(dragging === 'start' ? 'hStart' : 'hEnd').classList.remove('drag');
-    dragging = null;
-  }
-}
-
-let maxWarnT;
-function flashMax() {
-  clearTimeout(maxWarnT);
-  const el = document.getElementById('clipDur');
-  el.classList.add('over');
-  maxWarnT = setTimeout(() => el.classList.remove('over'), 700);
-}
-
-function updateTL() {
-  if (!S.loaded || !S.duration) return;
-  const sp = (S.startT / S.duration * 100) + '%';
-  const ep = (S.endT   / S.duration * 100) + '%';
-  document.getElementById('hStart').style.left = sp;
-  document.getElementById('hEnd').style.left   = ep;
-  const sel = document.getElementById('tlSel');
-  sel.style.left  = sp;
-  sel.style.width = ((S.endT - S.startT) / S.duration * 100) + '%';
-
-  const d = S.duration;
-  ['ts0','ts1','ts2','ts3','ts4'].forEach((id,i) => {
-    document.getElementById(id).textContent = fmt(d * i / 4);
-  });
-}
-
-function updateClipDur() {
-  const dur = S.endT - S.startT;
-  const el = document.getElementById('clipDur');
-  el.textContent = `${fmt(dur)} / 60s`;
-  el.className = 'clip-dur ' + (dur >= 59 ? 'over' : dur >= 45 ? 'warn' : 'ok');
-}
-
-function setIN() {
-  if (!S.loaded) return;
-  S.startT = vid.currentTime;
-  if (S.endT <= S.startT) S.endT = Math.min(S.duration, S.startT + 10);
-  if (S.endT - S.startT > 60) S.endT = S.startT + 60;
-  document.getElementById('mtIn').textContent  = fmt(S.startT);
-  document.getElementById('mtOut').textContent = fmt(S.endT);
-  updateTL(); updateClipDur();
-  toast('⬅ IN set at ' + fmt(S.startT), 'info');
-}
-
-function setOUT() {
-  if (!S.loaded) return;
-  let t = vid.currentTime;
-  if (t <= S.startT) t = S.startT + 0.5;
-  if (t - S.startT > 60) { t = S.startT + 60; toast('⚠️ Max 60 seconds — trimmed!', 'error'); }
-  S.endT = t;
-  document.getElementById('mtOut').textContent = fmt(S.endT);
-  updateTL(); updateClipDur();
-  toast('OUT set at ' + fmt(S.endT), 'info');
-}
-
-function genWave() {
-  const c = document.getElementById('tlWave');
-  c.innerHTML = '';
-  for (let i = 0; i < 90; i++) {
-    const b = document.createElement('div');
-    b.className = 'w-bar';
-    b.style.height = (15 + Math.random() * 72) + '%';
-    c.appendChild(b);
-  }
-}
-
-/* ═══════════════════════════════════════════════
-   HOOK TEMPLATES
-════════════════════════════════════════════════ */
-function buildHooks(sport) {
-  const grid = document.getElementById('hookGrid');
-  grid.innerHTML = '';
-  (HOOKS[sport] || HOOKS.football).forEach(([text, em]) => {
-    const d = document.createElement('div');
-    d.className = 'hook-tpl';
-    d.innerHTML = `<span>${text}</span><span>${em}</span>`;
-    d.onclick = () => {
-      document.querySelectorAll('.hook-tpl').forEach(x => x.classList.remove('sel'));
-      d.classList.add('sel');
-      document.getElementById('hookTxt').value = text;
+/* ══════════════════════════════════════════════════
+   HOOKS / SPORT / OVERLAYS
+══════════════════════════════════════════════════ */
+function buildHooks(sport){
+  const g=document.getElementById('hookG'); g.innerHTML='';
+  (HOOKS[sport]||HOOKS.football).forEach(([txt,em])=>{
+    const d=document.createElement('div'); d.className='hook-t';
+    d.innerHTML=`<span>${txt}</span><span>${em}</span>`;
+    d.onclick=()=>{
+      document.querySelectorAll('.hook-t').forEach(x=>x.classList.remove('on'));
+      d.classList.add('on');
+      document.getElementById('hookTxt').value=txt;
+      S.animT=0;
     };
-    grid.appendChild(d);
+    g.appendChild(d);
   });
 }
-
-function pickSport(btn) {
-  document.querySelectorAll('.sport-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  S.sport = btn.dataset.sport;
-  buildHooks(S.sport);
+function pickSport(btn){ document.querySelectorAll('.sp-btn').forEach(b=>b.classList.remove('on')); btn.classList.add('on'); S.sport=btn.dataset.sport; buildHooks(S.sport); }
+function pickAnim(btn){ document.querySelectorAll('.anim-btn').forEach(b=>b.classList.remove('on')); btn.classList.add('on'); S.anim=btn.dataset.anim; S.animT=0; }
+function pickPos(btn){ document.querySelectorAll('.pos-btn').forEach(b=>b.classList.remove('on')); btn.classList.add('on'); S.pos=btn.dataset.p; }
+function pickColor(sw){ document.querySelectorAll('.col-sw').forEach(s=>s.classList.remove('on')); sw.classList.add('on'); S.color=sw.dataset.c; }
+function pickLtColor(sw){ document.querySelectorAll('.lt-col').forEach(s=>s.classList.remove('on')); sw.classList.add('on'); S.ltColor=sw.dataset.c; }
+function pickGrade(btn){ document.querySelectorAll('.grade-btn').forEach(b=>b.classList.remove('on')); btn.classList.add('on'); S.grade=btn.dataset.grade; }
+function toggleFX(k){ S.effects[k]=!S.effects[k]; document.getElementById('fx-'+k).classList.toggle('on',S.effects[k]); if(k==='slowmo') applySpeed(); }
+function setFmt(btn){
+  document.querySelectorAll('.fmt-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active'); S.fmt=btn.dataset.fmt;
+  document.getElementById('sFmt').textContent=S.fmt;
 }
+function toggleSec(header){ header.closest('.ss').classList.toggle('collapsed'); }
 
-/* ═══════════════════════════════════════════════
-   OVERLAYS / EFFECTS
-════════════════════════════════════════════════ */
-function redraw() { /* render loop handles it automatically */ }
+/* ══════════════════════════════════════════════════
+   EXPORT
+══════════════════════════════════════════════════ */
+async function exportClip(){
+  if(!S.loaded||S.recording) return;
+  const dur=S.endT-S.startT;
+  if(dur<0.5){ toast('⚠️ Set IN/OUT points first!','error'); return; }
+  if(!window.MediaRecorder){ toast('❌ MediaRecorder not supported','error'); return; }
 
-function setPos(btn) {
-  document.querySelectorAll('.pos-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  S.pos = btn.dataset.p;
-}
+  S.recording=true;
+  const btn=document.getElementById('expBtn');
+  btn.disabled=true; btn.textContent='⏳ Recording…';
+  const epWrap=document.getElementById('epWrap');
+  const epFill=document.getElementById('epFill');
+  const epTxt=document.getElementById('epTxt');
+  epWrap.classList.add('on');
 
-function pickColor(sw) {
-  document.querySelectorAll('.col-sw').forEach(s => s.classList.remove('active'));
-  sw.classList.add('active');
-  S.color = sw.dataset.c;
-}
+  // For non-16:9 formats, render to a cropped export canvas
+  const usesCrop = S.fmt !== '16:9';
+  let expCanvas = canvas;
+  let expCtx = ctx;
+  if(usesCrop){
+    expCanvas = document.createElement('canvas');
+    const ch = canvas.height;
+    let cw;
+    if(S.fmt==='1:1') cw=ch;
+    else if(S.fmt==='9:16') cw=Math.round(ch*9/16);
+    else if(S.fmt==='4:5') cw=Math.round(ch*4/5);
+    else cw=canvas.width;
+    cw=Math.min(cw,canvas.width);
+    expCanvas.width=1080; expCanvas.height=Math.round(1080*(ch/cw));
+    expCtx=expCanvas.getContext('2d');
+    const srcX=(canvas.width-cw)/2;
+    // Mirror frames during recording
+  }
 
-function toggleFX(k) {
-  S.effects[k] = !S.effects[k];
-  document.getElementById('fx-'+k).classList.toggle('on', S.effects[k]);
-  if (k === 'slowmo') applySpeed();
-}
-
-/* ═══════════════════════════════════════════════
-   EXPORT  (Canvas → MediaRecorder → WebM)
-════════════════════════════════════════════════ */
-async function exportClip() {
-  if (!S.loaded || S.isRecording) return;
-
-  const dur = S.endT - S.startT;
-  if (dur < 0.5) { toast('⚠️ Set IN and OUT points first!', 'error'); return; }
-  if (!window.MediaRecorder) { toast('❌ MediaRecorder not supported in this browser', 'error'); return; }
-
-  S.isRecording = true;
-  const btn = document.getElementById('exportBtn');
-  btn.disabled = true; btn.textContent = '⏳ Recording…';
-  const progEl = document.getElementById('expProg');
-  const fill   = document.getElementById('progFill');
-  const txt    = document.getElementById('progTxt');
-  progEl.classList.add('active');
-
-  // Seek to start
-  vid.currentTime = S.startT;
-  await new Promise(res => { vid.onseeked = res; setTimeout(res, 600); });
-
+  vid.currentTime=S.startT;
+  await new Promise(res=>{ vid.onseeked=res; setTimeout(res,600); });
+  S.animT=0; if(S.effects.flash) S.flashAlpha=1;
   applySpeed();
-  if (S.effects.flash) S.flashAlpha = 1;
 
-  // Capture canvas stream
-  const stream   = canvas.captureStream(30);
-  const mimeType = ['video/webm;codecs=vp9','video/webm;codecs=vp8','video/webm','video/mp4']
-    .find(m => MediaRecorder.isTypeSupported(m)) || '';
+  // Pick stream source
+  const streamCanvas = usesCrop ? expCanvas : canvas;
+  const mimeType=['video/webm;codecs=vp9','video/webm;codecs=vp8','video/webm','video/mp4']
+    .find(m=>MediaRecorder.isTypeSupported(m))||'';
+  const stream=streamCanvas.captureStream(30);
+  const rec=new MediaRecorder(stream,{mimeType:mimeType||undefined,videoBitsPerSecond:6_000_000});
+  const chunks=[];
+  rec.ondataavailable=e=>{ if(e.data.size>0) chunks.push(e.data); };
 
-  const rec = new MediaRecorder(stream, {
-    mimeType: mimeType || undefined,
-    videoBitsPerSecond: 6_000_000
-  });
-  const chunks = [];
-  rec.ondataavailable = e => { if (e.data.size > 0) chunks.push(e.data); };
+  // If cropping, drive a per-frame copy loop
+  let cropRaf;
+  if(usesCrop){
+    const srcCw = canvas.height*(S.fmt==='1:1'?1:S.fmt==='9:16'?9/16:4/5);
+    const srcX  = (canvas.width-Math.min(srcCw,canvas.width))/2;
+    function copyFrame(){
+      cropRaf=requestAnimationFrame(copyFrame);
+      expCtx.drawImage(canvas,srcX,0,Math.min(srcCw,canvas.width),canvas.height,0,0,expCanvas.width,expCanvas.height);
+    }
+    copyFrame();
+  }
 
-  rec.onstop = () => {
-    const blob = new Blob(chunks, { type: mimeType || 'video/webm' });
-    const a = Object.assign(document.createElement('a'), {
-      href: URL.createObjectURL(blob),
-      download: `SportsCLIP_${S.sport}_${new Date().toISOString().slice(0,10)}.webm`
+  rec.onstop=()=>{
+    if(cropRaf) cancelAnimationFrame(cropRaf);
+    const blob=new Blob(chunks,{type:mimeType||'video/webm'});
+    const a=Object.assign(document.createElement('a'),{
+      href:URL.createObjectURL(blob),
+      download:`SportsCLIP_${S.sport}_${S.fmt.replace(':','x')}_${new Date().toISOString().slice(0,10)}.webm`
     });
-    a.click();
-    URL.revokeObjectURL(a.href);
-
-    S.isRecording = false;
-    btn.disabled = false;
-    btn.innerHTML = '⬇&nbsp; Export Highlight Clip';
-    progEl.classList.remove('active');
-    fill.style.width = '0%';
-    toast('🎉 Highlight exported! Check your downloads.', 'success');
+    a.click(); URL.revokeObjectURL(a.href);
+    S.recording=false;
+    btn.disabled=false; btn.innerHTML='⬇&nbsp; Export Highlight Clip';
+    epWrap.classList.remove('on'); epFill.style.width='0%';
+    toast('🎉 Highlight exported! Check your downloads.','success');
   };
 
   rec.start(100);
   vid.play();
 
-  // Effective wall-clock time = clip / playbackRate
-  const wallDur = dur / vid.playbackRate;
-  const t0 = Date.now();
-  const tick = setInterval(() => {
-    const pct = Math.min(95, (Date.now() - t0) / 1000 / wallDur * 100);
-    fill.style.width = pct + '%';
-    txt.textContent  = `Rendering… ${Math.round(pct)}%`;
-  }, 200);
+  const wallDur=dur/vid.playbackRate;
+  const t0=Date.now();
+  const tick=setInterval(()=>{
+    const pct=Math.min(95,(Date.now()-t0)/1000/wallDur*100);
+    epFill.style.width=pct+'%';
+    epTxt.textContent=`Rendering… ${Math.round(pct)}%`;
+  },200);
 
-  setTimeout(() => {
-    clearInterval(tick);
-    fill.style.width = '100%';
-    txt.textContent  = 'Finalizing…';
-    vid.pause();
-    rec.stop();
-  }, wallDur * 1000 + 300);
+  setTimeout(()=>{
+    clearInterval(tick); epFill.style.width='100%'; epTxt.textContent='Finalizing…';
+    vid.pause(); rec.stop();
+  }, wallDur*1000+300);
 }
 
-/* ═══════════════════════════════════════════════
+/* ══════════════════════════════════════════════════
    KEYBOARD SHORTCUTS
-════════════════════════════════════════════════ */
-document.addEventListener('keydown', e => {
-  const tag = document.activeElement.tagName;
-  if (tag === 'INPUT' || tag === 'TEXTAREA') return;
-
-  switch (e.key) {
-    case ' ':         e.preventDefault(); togglePlay();   break;
-    case 'i': case 'I': setIN();          break;
-    case 'o': case 'O': setOUT();         break;
-    case 'p': case 'P': previewClip();    break;
-    case 's': case 'S': cycleSpeed();     break;
-    case 'e': case 'E': exportClip();     break;
-    case '?':           document.getElementById('kbdModal').classList.add('show'); break;
-    case 'Escape':      document.getElementById('kbdModal').classList.remove('show'); break;
-    case 'ArrowLeft':
-      if (S.loaded) vid.currentTime = Math.max(0, vid.currentTime - (e.shiftKey ? 5 : 1));
-      break;
-    case 'ArrowRight':
-      if (S.loaded) vid.currentTime = Math.min(S.duration, vid.currentTime + (e.shiftKey ? 5 : 1));
-      break;
+══════════════════════════════════════════════════ */
+document.addEventListener('keydown', e=>{
+  const tag=document.activeElement.tagName;
+  if(tag==='INPUT'||tag==='TEXTAREA') return;
+  switch(e.key){
+    case ' ':        e.preventDefault(); togglePlay();  break;
+    case 'i':case 'I': setIN();          break;
+    case 'o':case 'O': setOUT();         break;
+    case 'p':case 'P': previewClip();    break;
+    case 's':case 'S': cycleSpeed();     break;
+    case 'e':case 'E': exportClip();     break;
+    case '?':          document.getElementById('kbdOv').classList.add('show'); break;
+    case 'Escape':     document.getElementById('kbdOv').classList.remove('show'); break;
+    case 'ArrowLeft':  if(S.loaded) vid.currentTime=Math.max(0,vid.currentTime-(e.shiftKey?5:1)); break;
+    case 'ArrowRight': if(S.loaded) vid.currentTime=Math.min(S.duration,vid.currentTime+(e.shiftKey?5:1)); break;
   }
 });
 
-/* ═══════════════════════════════════════════════
+/* ══════════════════════════════════════════════════
    UTILITIES
-════════════════════════════════════════════════ */
-function fmt(s) {
-  if (!s || isNaN(s)) return '0:00';
-  const m = Math.floor(s / 60), sec = Math.floor(s % 60);
+══════════════════════════════════════════════════ */
+function fmt(s){
+  if(!s||isNaN(s)) return '0:00';
+  const m=Math.floor(s/60),sec=Math.floor(s%60);
   return `${m}:${sec.toString().padStart(2,'0')}`;
 }
-
 let toastT;
-function toast(msg, type = '') {
-  const el = document.getElementById('toast');
-  el.textContent = msg;
-  el.className = 'toast show ' + type;
+function toast(msg,type=''){
+  const el=document.getElementById('toast');
+  el.textContent=msg; el.className='toast show '+type;
   clearTimeout(toastT);
-  toastT = setTimeout(() => el.className = 'toast', 3800);
+  toastT=setTimeout(()=>el.className='toast',3800);
 }
 </script>
 </body>
